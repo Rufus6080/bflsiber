@@ -2,28 +2,6 @@ const SESSION_KEY = 'admin_session';
 const CONTACTS_KEY = 'contact_entries';
 const ADMIN_HASH_KEY = 'admin_pw_hash';
 
-// --- GITHUB CONFIG ---
-const GITHUB_USER = 'Rufus6080'; 
-const GITHUB_REPO = 'bflsiber';      
-
-async function getDropboxFiles() {
-  try {
-    const response = await fetch(`https://api.github.com/repos/${GITHUB_USER}/${GITHUB_REPO}/releases/latest`);
-    if (!response.ok) return [];
-    const data = await response.json();
-    return data.assets.map(asset => ({
-      name: asset.name,
-      url: asset.browser_download_url,
-      size: (asset.size / (1024 * 1024)).toFixed(2) + " MB",
-      date: new Date(asset.updated_at).toLocaleDateString()
-    }));
-  } catch (e) {
-    console.error("Dropbox error:", e);
-    return [];
-  }
-}
-
-// --- EXISTING ADMIN LOGIC ---
 async function sha256(message) {
   const buf = new TextEncoder().encode(message);
   const hash = await crypto.subtle.digest('SHA-256', buf);
@@ -33,7 +11,7 @@ async function sha256(message) {
 async function getStoredHash() {
   const stored = localStorage.getItem(ADMIN_HASH_KEY);
   if (stored) return stored;
-  return await sha256('admin'); // Default password, too bad I changed it noob
+  return await sha256('francis');
 }
 
 async function checkLogin(username, password) {
@@ -59,7 +37,6 @@ function saveContact(entry) {
 }
 
 function getContacts() {
-  try {
-    return JSON.parse(localStorage.getItem(CONTACTS_KEY)) || [];
-  } catch(e) { return []; }
+  try { return JSON.parse(localStorage.getItem(CONTACTS_KEY)) || []; }
+  catch { return []; }
 }
