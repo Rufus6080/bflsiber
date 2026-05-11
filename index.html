@@ -173,7 +173,39 @@ footer a{color:var(--accent)}
     </div>
   </div>
 </section>
+  
+<section id="dropbox">
+  <div class="section-tag">public_repo!!</div>
+  <h2>[dosya deposu / dropbox]</h2>
+  <div id="fileList" class="posts">
+    <div class="post">Sistem taranıyor...</div>
+  </div>
+</section>
 
+<script>
+  async function renderFiles() {
+    const files = await getDropboxFiles();
+    const container = document.getElementById('fileList');
+    if (!container) return;
+    
+    if (files.length === 0) {
+      container.innerHTML = '<div class="post">Henüz dosya yüklenmedi.</div>';
+      return;
+    }
+
+    container.innerHTML = files.map(f => `
+      <a href="${f.url}" class="post" target="_blank">
+        <div>
+          <span class="post-tag">DOWNLOAD</span>
+          <span class="post-title">${f.name}</span>
+        </div>
+        <div class="post-meta">${f.size} | ${f.date}</div>
+      </a>
+    `).join('');
+  }
+  document.addEventListener('DOMContentLoaded', renderFiles);
+</script>
+  
 <!-- EKİP -->
 <section id="team">
   <div class="section-tag">ekip!!</div>
