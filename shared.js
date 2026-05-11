@@ -1,3 +1,24 @@
+// --- DROPBOX CONFIG ---
+const GITHUB_USER = 'Rufus6080'; // <--- Change this
+const GITHUB_REPO = 'bflsiber';      // <--- Change this
+
+async function getDropboxFiles() {
+  try {
+    const response = await fetch(`https://api.github.com/repos/${GITHUB_USER}/${GITHUB_REPO}/releases/latest`);
+    if (!response.ok) return [];
+    const data = await response.json();
+    return data.assets.map(asset => ({
+      name: asset.name,
+      url: asset.browser_download_url,
+      size: (asset.size / (1024 * 1024)).toFixed(2) + " MB",
+      date: new Date(asset.updated_at).toLocaleDateString()
+    }));
+  } catch (e) {
+    console.error("Dropbox Error:", e);
+    return [];
+  }
+}
+
 const SESSION_KEY = 'admin_session';
 const CONTACTS_KEY = 'contact_entries';
 const ADMIN_HASH_KEY = 'admin_pw_hash';
