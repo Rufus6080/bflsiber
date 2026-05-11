@@ -9,7 +9,7 @@
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
-  --bg:#OBOB45;
+  --bg: transparent;
   --surface:#0a0a0a;
   --border:#1e2a38;
   --accent:#00ff88;
@@ -19,10 +19,30 @@
   --mono:'Space Mono',monospace;
   --sans:'Inter',sans-serif;
 }
-body{background:var(--bg);color:var(--text);font-family:var(--sans);min-height:100vh;overflow-x:hidden}
-a{color:inherit;text-decoration:none}
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--sans);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
 
-/* NAV */
+/* This handles the video positioning */
+#bg-video {
+  position: fixed;
+  right: 0;
+  bottom: 0;
+  min-width: 100%; 
+  min-height: 100%;
+  z-index: -1; 
+  object-fit: cover;
+  opacity: 0.5; 
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
 nav{display:flex;align-items:center;justify-content:space-between;padding:1.25rem 2rem;border-bottom:1px solid var(--border);position:sticky;top:0;background:rgba(8,12,16,0.95);backdrop-filter:blur(8px);z-index:100}
 .logo{font-family:var(--mono);font-size:1rem;color:var(--accent);letter-spacing:0.05em}
 .logo span{color:var(--muted)}
@@ -89,6 +109,11 @@ footer a{color:var(--accent)}
 </style>
 </head>
 <body>
+  <video autoplay muted loop playsinline id="bg-video">
+    <source src="matrix.mp4" type="video/mp4">
+  </video>
+
+  <nav> ... </nav>
 
 <!-- NAV -->
 <nav>
