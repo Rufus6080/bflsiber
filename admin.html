@@ -75,7 +75,7 @@ h2{font-size:1.5rem;font-weight:300;letter-spacing:-0.02em;margin-bottom:2rem}
     <h1>Giriş yap</h1>
     <div class="field"><label>username</label><input type="text" id="uname" autocomplete="username"></div>
     <div class="field"><label>password</label><input type="password" id="upass" autocomplete="current-password"></div>
-    <button class="btn" onclick="doLogin()">authenticate →</button>
+    <button class="btn" onclick="doLogin()">Login →</button>
     <div class="error" id="loginError">Yanlış bildin agla</div>
     <a href="https://bflsiber.pages.dev" style="display:block;margin-top:1rem;font-family:var(--mono);font-size:0.75rem;color:var(--danger);text-decoration:none;text-align:center;transition:opacity 0.2s" onmouseover="this.style.opacity='0.7'" onmouseout="this.style.opacity='1'">← geri</a>
   </div>
@@ -87,6 +87,7 @@ h2{font-size:1.5rem;font-weight:300;letter-spacing:-0.02em;margin-bottom:2rem}
     <div class="logo">[<span>cyber</span>group] <span style="color:var(--muted);font-size:0.75rem">/ admin</span></div>
     <div class="nav-right">
       <span class="nav-tab active" onclick="showPage('contacts',this)">contacts</span>
+      <span class="nav-tab" onclick="showPage('files',this)">BFLS Dropbox</span>
       <span class="nav-tab" onclick="showPage('changepw',this)">change password</span>
       <a class="nav-back" href="https://bflsiber.pages.dev">← geri</a>
       <span class="nav-logout" onclick="logout()">logout</span>
