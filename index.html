@@ -4,72 +4,234 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>BFLSiber</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
-  /* [Your existing CSS remains exactly the same] */
-  :root{--bg:#080c10;--surface:#0d1117;--border:#1e2a38;--accent:#00ff88;--text:#e2e8f0;--muted:#4a5568;--mono:'Space Mono',monospace;--sans:'Inter',sans-serif;}
-  body{background:var(--bg);color:var(--text);font-family:var(--sans);margin:0;padding:0;}
-  nav{display:flex;justify-content:space-between;padding:1.25rem 2rem;border-bottom:1px solid var(--border);background:rgba(8,12,16,0.8);backdrop-filter:blur(10px);position:sticky;top:0;z-index:100;}
-  .logo{font-family:var(--mono);font-weight:700;color:var(--accent);}
-  .nav-links a{margin-left:1.5rem;font-family:var(--mono);font-size:0.85rem;color:var(--muted);transition:0.2s;}
-  .nav-links a:hover{color:var(--accent);}
-  section{max-width:900px;margin:4rem auto;padding:0 2rem;}
-  .section-tag{font-family:var(--mono);font-size:0.7rem;color:var(--accent);margin-bottom:0.5rem;text-transform:uppercase;}
-  h2{font-family:var(--mono);font-size:1.5rem;margin-bottom:2rem;}
-  .posts{display:grid;gap:1px;background:var(--border);border:1px solid var(--border);}
-  .post{background:var(--surface);padding:1.5rem;display:flex;justify-content:space-between;align-items:center;transition:0.2s;}
-  .post:hover{background:#161b22;}
-  .post-tag{font-family:var(--mono);font-size:0.65rem;padding:0.2rem 0.5rem;background:rgba(0,255,136,0.1);color:var(--accent);margin-right:1rem;border:1px solid rgba(0,255,136,0.2);}
-  .post-title{font-weight:500;font-size:1rem;}
-  .post-meta{font-family:var(--mono);font-size:0.75rem;color:var(--muted);}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#080c10;
+  --surface:#0d1117;
+  --border:#1e2a38;
+  --accent:#00ff88;
+  --accent2:#0066ff;
+  --text:#e2e8f0;
+  --muted:#4a5568;
+  --mono:'Space Mono',monospace;
+  --sans:'Inter',sans-serif;
+}
+body{background:var(--bg);color:var(--text);font-family:var(--sans);min-height:100vh;overflow-x:hidden}
+a{color:inherit;text-decoration:none}
+
+/* NAV */
+nav{display:flex;align-items:center;justify-content:space-between;padding:1.25rem 2rem;border-bottom:1px solid var(--border);position:sticky;top:0;background:rgba(8,12,16,0.95);backdrop-filter:blur(8px);z-index:100}
+.logo{font-family:var(--mono);font-size:1rem;color:var(--accent);letter-spacing:0.05em}
+.logo span{color:var(--muted)}
+.nav-links{display:flex;gap:2rem;font-size:0.85rem;color:var(--muted)}
+.nav-links a:hover{color:var(--text)}
+.nav-links a.cta{color:var(--accent);border:1px solid var(--accent);padding:0.4rem 1rem;border-radius:4px;font-family:var(--mono);font-size:0.8rem;transition:background 0.2s}
+.nav-links a.cta:hover{background:rgba(0,255,136,0.1)}
+
+/* HERO */
+.hero{min-height:90vh;display:flex;align-items:center;justify-content:center;text-align:center;padding:4rem 2rem;position:relative;overflow:hidden}
+.scanlines{position:absolute;inset:0;background:repeating-linear-gradient(0deg,transparent,transparent 3px,rgba(0,0,0,0.15) 3px,rgba(0,0,0,0.15) 4px);pointer-events:none;opacity:0.4}
+.hero-content{max-width:580px;position:relative;z-index:1}
+.hero-tag{font-family:var(--mono);font-size:0.75rem;color:var(--accent);letter-spacing:0.15em;text-transform:uppercase;margin-bottom:1.5rem;display:flex;align-items:center;justify-content:center;gap:0.5rem}
+.hero-tag::before,.hero-tag::after{content:'';width:24px;height:1px;background:var(--accent)}
+h1{font-size:clamp(2.5rem,6vw,4.5rem);font-weight:300;line-height:1.1;letter-spacing:-0.03em;margin-bottom:1.5rem}
+h1 strong{font-weight:700;color:var(--accent);font-family:var(--mono)}
+.blink{animation:blink 1.1s step-end infinite}
+@keyframes blink{50%{opacity:0}}
+.hero-desc{font-size:1.05rem;color:var(--muted);line-height:1.8;margin-bottom:2.5rem}
+.hero-desc em{color:var(--text);font-style:normal}
+.hero-actions{display:flex;gap:1rem;flex-wrap:wrap;justify-content:center}
+.btn-primary{background:var(--accent);color:#000;font-family:var(--mono);font-size:0.85rem;padding:0.75rem 1.75rem;border-radius:0;font-weight:700;transition:opacity 0.2s;letter-spacing:0.05em}
+.btn-primary:hover{opacity:0.85}
+.btn-ghost{border:1px solid var(--border);color:var(--muted);font-family:var(--mono);font-size:0.85rem;padding:0.75rem 1.75rem;border-radius:0;transition:border-color 0.2s,color 0.2s;letter-spacing:0.05em}
+.btn-ghost:hover{border-color:var(--text);color:var(--text)}
+
+/* STATS */
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:1px;background:var(--border);border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
+.stat{background:var(--surface);padding:2rem;text-align:center}
+.stat-num{font-family:var(--mono);font-size:1.6rem;color:var(--accent);font-weight:700;letter-spacing:0.05em}
+.stat-label{font-size:0.75rem;color:var(--muted);margin-top:0.4rem;letter-spacing:0.08em;text-transform:uppercase}
+
+/* SECTIONS */
+section{padding:5rem 2rem;max-width:1100px;margin:0 auto}
+.section-tag{font-family:var(--mono);font-size:0.7rem;color:var(--accent2);letter-spacing:0.2em;text-transform:uppercase;margin-bottom:1rem}
+h2{font-size:clamp(1.5rem,3vw,2.5rem);font-weight:300;margin-bottom:3rem;letter-spacing:-0.02em}
+
+/* CARDS */
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1px;background:var(--border)}
+.card{background:var(--surface);padding:2rem;transition:background 0.2s;border-left:3px solid transparent}
+.card:hover{background:#111820;border-left-color:var(--accent)}
+.card-icon{font-family:var(--mono);font-size:1.5rem;color:var(--accent);margin-bottom:1rem}
+.card h3{font-size:0.9rem;font-weight:700;margin-bottom:0.75rem;font-family:var(--mono);text-transform:lowercase;color:var(--text)}
+.card p{font-size:0.9rem;color:var(--muted);line-height:1.7}
+
+/* TEAM */
+.team{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1px;background:var(--border)}
+.member{background:var(--surface);padding:1.75rem;transition:background 0.2s}
+.member:hover{background:#111820}
+.member-handle{font-family:var(--mono);font-size:0.95rem;color:var(--accent);margin-bottom:0.4rem}
+.member-role{font-size:0.8rem;color:var(--muted);letter-spacing:0.05em}
+
+/* WRITEUPS / BLOG */
+.posts{display:flex;flex-direction:column;gap:1px;background:var(--border)}
+.post{background:var(--surface);padding:1.5rem 2rem;display:flex;justify-content:space-between;align-items:center;transition:background 0.2s;cursor:pointer}
+.post:hover{background:#111820}
+.post-title{font-family:var(--mono);font-size:0.9rem;color:var(--text)}
+.post-meta{font-size:0.75rem;color:var(--muted);text-align:right;font-family:var(--mono)}
+.post-tag{display:inline-block;font-size:0.7rem;font-family:var(--mono);color:var(--accent2);border:1px solid var(--accent2);padding:0.1rem 0.5rem;margin-right:0.5rem;opacity:0.7}
+
+/* FOOTER */
+footer{border-top:1px solid var(--border);padding:2rem;text-align:center;font-size:0.8rem;color:var(--muted);font-family:var(--mono)}
+footer a{color:var(--accent)}
 </style>
 </head>
 <body>
+
+<!-- NAV -->
 <nav>
-  <div class="logo">BFLSİBER<span>.sh</span></div>
+  <div class="logo"><span>BFL</span>Siber</div>
   <div class="nav-links">
-    <a href="#dropbox">dropbox</a>
-    <a href="contact.html">contact</a>
-    <a href="admin.html">admin</a>
+    <a href="#about">hakkında!!</a>
+    <a href="#services">hizmetler!!</a>
+    <a href="#team">ekip!!</a>
+    <a href="#writeups">writeups!!</a>
+    <a href="contact.html">iletişim!!</a>
+    <a href="admin.html" class="cta">admin!!</a>
   </div>
 </nav>
 
+<!-- HERO -->
+<div class="hero">
+  <div class="scanlines"></div>
+  <div class="hero-content">
+    <div class="hero-tag">siber güvenlik ekibi</div>
+    <h1>BFL<br><strong>Siber<span class="blink">_</span></strong><br>Güvenlik</h1>
+    <p class="hero-desc">
+      Baykar Fen Lisesinde kurulan bir siber güvenlik grubu<br>
+      <em>CTF yarışmaları yapacağız</em>
+    </p>
+    <div class="hero-actions">
+      <a href="contact.html" class="btn-primary">iletişim!!</a>
+      <a href="#about" class="btn-ghost">daha fazla? →</a>
+    </div>
+  </div>
+</div>
+
+<!-- STATS BAR -->
+<div class="stats">
+  <div class="stat"><div class="stat-num">1+</div><div class="stat-label">aktif üye</div></div>
+  <div class="stat"><div class="stat-num">0+</div><div class="stat-label">ctf writeup</div></div>
+  <div class="stat"><div class="stat-num">00/0</div><div class="stat-label">whatsapp</div></div>
+  <div class="stat"><div class="stat-num">2026</div><div class="stat-label">kuruluş</div></div>
+</div>
+
+<!-- HAKKIMIZDA -->
+<section id="about">
+  <div class="section-tag">hakkımızda??</div>
+  <h2>kimiz, ne yapıyoruz</h2>
+  <div class="cards">
+    <div class="card">
+      <div class="card-icon">&gt;_</div>
+      <h3>CTF & yarışmalar</h3>
+      <p>En yakın zamanda CTF ve yarışmalara katılıp writeup paylaşacağız</p>
+    </div>
+    <div class="card">
+      <div class="card-icon">#!</div>
+      <h3>güvenlik araştırması</h3>
+      <p>Sürekli araştırma yapıyor ve öğreniyoruz</p>
+    </div>
+    <div class="card">
+      <div class="card-icon">::</div>
+      <h3>topluluk & eğitim</h3>
+      <p>BFLSiber'de siber güvenliğe ilgi duyan herkese açık(değil) bir öğrenme ortamı oluşturuyoruz</p>
+    </div>
+  </div>
+</section>
+
+<!-- HİZMETLER -->
+<section id="services">
+  <div class="section-tag">hizmetler!!</div>
+  <h2>buraya yazacak birşey bulamadım</h2>
+  <div class="cards">
+    <div class="card">
+      <div class="card-icon">01</div>
+      <h3>Havalıyız</h3>
+      <p>Tartışmaya açık değil.</p>
+    </div>
+    <div class="card">
+      <div class="card-icon">02</div>
+      <h3>Aktifiz</h3>
+      <p>Bu yalan bu arada</p>
+    </div>
+    <div class="card">
+      <div class="card-icon">03</div>
+      <h3>Öğrenmeye Açığız</h3>
+      <p>En yakın zamanda iş yapmaya başlamayı düşünüyoruz</p>
+    </div>
+  </div>
+</section>
+
+<!-- EKİP -->
+<section id="team">
+  <div class="section-tag">ekip!!</div>
+  <h2>BFLSiber Üyeler</h2>
+  <div class="team">
+    <div class="member">
+      <div class="member-handle">@koray (yani ben)</div>
+      <div class="member-role">Bilmem</div>
+    </div>
+    <div class="member">
+      <div class="member-handle">@2. adam</div>
+      <div class="member-role">[rol / uzmanlık]</div>
+    </div>
+    <div class="member">
+      <div class="member-handle">3. adam</div>
+      <div class="member-role">[rol / uzmanlık]</div>
+    </div>
+    <div class="member">
+      <div class="member-handle">4. adam</div>
+      <div class="member-role">[rol / uzmanlık]</div>
+    </div>
+  </div>
+</section>
+
+<!-- WRITEUPS / BLOG -->
 <section id="writeups">
   <div class="section-tag">writeups!!</div>
   <h2>[writeups ve blog]</h2>
   <div class="posts">
     <a href="#" class="post">
-      <div><span class="post-tag">CTF</span><span class="post-title">Siber Güvenliğe Giriş</span></div>
-      <div class="post-meta">11-05-2024</div>
+      <div>
+        <span class="post-tag">CTF</span>
+        <span class="post-title">birşey olunca başlık buraya))</span>
+      </div>
+      <div class="post-meta">gg-aa-yyyy</div>
+    </a>
+    <a href="#" class="post">
+      <div>
+        <span class="post-tag">writeup</span>
+        <span class="post-title">birşey olunca başlık buraya))</span>
+      </div>
+      <div class="post-meta">gg-aa-yyyy</div>
+    </a>
+    <a href="#" class="post">
+      <div>
+        <span class="post-tag">research</span>
+        <span class="post-title">birşey olunca başlık buraya))</span>
+      </div>
+      <div class="post-meta">gg-aa-yyyy</div>
     </a>
   </div>
 </section>
 
-<section id="dropbox">
-  <div class="section-tag">public_repo!!</div>
-  <h2>[dosya deposu / dropbox]</h2>
-  <div id="fileList" class="posts">
-    <div class="post">Sistem taranıyor...</div>
-  </div>
-</section>
+<!-- FOOTER -->
+<footer>
+  <span>BFLSiber — </span>
+  <a href="#">github</a> · <a href="#">discord</a> · <a href="contact.html">iletişim</a> · <a href="admin.html">admin</a>
+</footer>
 
-<script src="shared.js"></script>
-<script>
-  async function renderFiles() {
-    const files = await getDropboxFiles();
-    const container = document.getElementById('fileList');
-    if (files.length === 0) {
-      container.innerHTML = '<div class="post">Dosya bulunamadı.</div>';
-      return;
-    }
-    container.innerHTML = files.map(f => `
-      <a href="${f.url}" class="post" target="_blank">
-        <div><span class="post-tag">DOWNLOAD</span><span class="post-title">${f.name}</span></div>
-        <div class="post-meta">${f.size} | ${f.date}</div>
-      </a>
-    `).join('');
-  }
-  document.addEventListener('DOMContentLoaded', renderFiles);
-</script>
 </body>
 </html>
