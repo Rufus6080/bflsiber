@@ -36,6 +36,8 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:1rem 2
 .nav-tab:hover,.nav-tab.active{color:var(--accent);border-color:var(--accent)}
 .nav-logout{font-family:var(--mono);font-size:0.75rem;color:var(--danger);cursor:pointer;padding:0.4rem 0.75rem;border:1px solid transparent;border-radius:4px}
 .nav-logout:hover{border-color:var(--danger)}
+.nav-back{font-family:var(--mono);font-size:0.75rem;color:var(--muted);text-decoration:none;padding:0.4rem 0.75rem;border:1px solid transparent;border-radius:4px;transition:all 0.15s;display:inline-flex;align-items:center;gap:0.3rem}
+.nav-back:hover{color:var(--text);border-color:var(--border)}
 
 main{padding:2.5rem 2rem;max-width:900px;margin:0 auto}
 .page{display:none}
@@ -84,6 +86,7 @@ h2{font-size:1.5rem;font-weight:300;letter-spacing:-0.02em;margin-bottom:2rem}
     <div class="nav-right">
       <span class="nav-tab active" onclick="showPage('contacts',this)">contacts</span>
       <span class="nav-tab" onclick="showPage('changepw',this)">change password</span>
+      <a class="nav-back" href="https://bflsiber.pages.dev">← geri</a>
       <span class="nav-logout" onclick="logout()">logout</span>
     </div>
   </nav>
