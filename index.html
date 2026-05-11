@@ -258,7 +258,34 @@ footer a{color:var(--accent)}
     </a>
   </div>
 </section>
+  
+<script src="shared.js"></script>
 
+<script>
+  async function renderFiles() {
+    // Now this function will find 'getDropboxFiles' in shared.js
+    const files = await getDropboxFiles(); 
+    const container = document.getElementById('fileList');
+    if (!container) return;
+    
+    if (files.length === 0) {
+      container.innerHTML = '<div class="post">Henüz dosya yüklenmedi.</div>';
+      return;
+    }
+
+    container.innerHTML = files.map(f => `
+      <a href="${f.url}" class="post" target="_blank">
+        <div>
+          <span class="post-tag">DOWNLOAD</span>
+          <span class="post-title">${f.name}</span>
+        </div>
+        <div class="post-meta">${f.size} | ${f.date}</div>
+      </a>
+    `).join('');
+  }
+  document.addEventListener('DOMContentLoaded', renderFiles);
+</script>
+  
 <!-- FOOTER -->
 <footer>
   <span>BFLSiber — </span>
