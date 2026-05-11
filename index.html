@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CyberGroup — Security Research</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#080c10;
+  --surface:#0d1117;
+  --border:#1e2a38;
+  --accent:#00ff88;
+  --accent2:#0066ff;
+  --text:#e2e8f0;
+  --muted:#4a5568;
+  --mono:'Space Mono',monospace;
+  --sans:'Inter',sans-serif;
+}
+body{background:var(--bg);color:var(--text);font-family:var(--sans);min-height:100vh;overflow-x:hidden}
+a{color:inherit;text-decoration:none}
+
+/* nav */
+nav{display:flex;align-items:center;justify-content:space-between;padding:1.25rem 2rem;border-bottom:1px solid var(--border);position:sticky;top:0;background:rgba(8,12,16,0.95);backdrop-filter:blur(8px);z-index:100}
+.logo{font-family:var(--mono);font-size:1rem;color:var(--accent);letter-spacing:0.05em}
+.logo span{color:var(--muted)}
+.nav-links{display:flex;gap:2rem;font-size:0.85rem;color:var(--muted)}
+.nav-links a:hover{color:var(--text)}
+.nav-links a.cta{color:var(--accent);border:1px solid var(--accent);padding:0.4rem 1rem;border-radius:4px;font-family:var(--mono);font-size:0.8rem;transition:background 0.2s}
+.nav-links a.cta:hover{background:rgba(0,255,136,0.1)}
+
+/* hero */
+.hero{min-height:90vh;display:flex;align-items:center;padding:4rem 2rem;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 20% 50%, rgba(0,102,255,0.08) 0%, transparent 60%), radial-gradient(ellipse at 80% 20%, rgba(0,255,136,0.05) 0%, transparent 50%);pointer-events:none}
+.grid-bg{position:absolute;inset:0;background-image:linear-gradient(var(--border) 1px,transparent 1px),linear-gradient(90deg,var(--border) 1px,transparent 1px);background-size:40px 40px;opacity:0.3;pointer-events:none}
+.hero-content{max-width:700px;position:relative;z-index:1}
+.hero-tag{font-family:var(--mono);font-size:0.75rem;color:var(--accent);letter-spacing:0.15em;text-transform:uppercase;margin-bottom:1.5rem;display:flex;align-items:center;gap:0.5rem}
+.hero-tag::before{content:'';width:24px;height:1px;background:var(--accent)}
+h1{font-size:clamp(2.5rem,6vw,4.5rem);font-weight:300;line-height:1.1;letter-spacing:-0.03em;margin-bottom:1.5rem}
+h1 strong{font-weight:500;color:var(--accent)}
+.hero-desc{font-size:1.05rem;color:var(--muted);line-height:1.8;max-width:520px;margin-bottom:2.5rem}
+.hero-actions{display:flex;gap:1rem;flex-wrap:wrap}
+.btn-primary{background:var(--accent);color:#000;font-family:var(--mono);font-size:0.85rem;padding:0.75rem 1.75rem;border-radius:4px;font-weight:700;transition:opacity 0.2s}
+.btn-primary:hover{opacity:0.85}
+.btn-ghost{border:1px solid var(--border);color:var(--muted);font-family:var(--mono);font-size:0.85rem;padding:0.75rem 1.75rem;border-radius:4px;transition:border-color 0.2s,color 0.2s}
+.btn-ghost:hover{border-color:var(--text);color:var(--text)}
+
+/* stats */
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:1px;background:var(--border);border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
+.stat{background:var(--surface);padding:2rem;text-align:center}
+.stat-num{font-family:var(--mono);font-size:2rem;color:var(--accent);font-weight:700}
+.stat-label{font-size:0.8rem;color:var(--muted);margin-top:0.25rem;letter-spacing:0.05em}
+
+/* sections */
+section{padding:5rem 2rem;max-width:1100px;margin:0 auto}
+.section-tag{font-family:var(--mono);font-size:0.7rem;color:var(--accent2);letter-spacing:0.2em;text-transform:uppercase;margin-bottom:1rem}
+h2{font-size:clamp(1.5rem,3vw,2.5rem);font-weight:300;margin-bottom:3rem;letter-spacing:-0.02em}
+
+/* cards */
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1px;background:var(--border)}
+.card{background:var(--surface);padding:2rem;transition:background 0.2s}
+.card:hover{background:#111820}
+.card-icon{font-family:var(--mono);font-size:1.5rem;color:var(--accent);margin-bottom:1rem}
+.card h3{font-size:1rem;font-weight:500;margin-bottom:0.75rem}
+.card p{font-size:0.9rem;color:var(--muted);line-height:1.7}
+
+/* footer */
+footer{border-top:1px solid var(--border);padding:2rem;text-align:center;font-size:0.8rem;color:var(--muted);font-family:var(--mono)}
+footer a{color:var(--accent)}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="logo">[<span>cyber</span>group]</div>
+  <div class="nav-links">
+    <a href="#about">about</a>
+    <a href="#services">services</a>
+    <a href="contact.html">contact</a>
+    <a href="admin.html" class="cta">admin →</a>
+  </div>
+</nav>
+
+<div class="hero">
+  <div class="grid-bg"></div>
+  <div class="hero-content">
+    <div class="hero-tag">security research group</div>
+    <h1>We find what<br>others <strong>miss.</strong></h1>
+    <p class="hero-desc">Offensive security research, vulnerability disclosure, and community-driven knowledge sharing. We operate in the shadows so you don't have to.</p>
+    <div class="hero-actions">
+      <a href="contact.html" class="btn-primary">get in touch</a>
+      <a href="#about" class="btn-ghost">learn more</a>
+    </div>
+  </div>
+</div>
+
+<div class="stats">
+  <div class="stat"><div class="stat-num">CTF</div><div class="stat-label">competitors</div></div>
+  <div class="stat"><div class="stat-num">0day</div><div class="stat-label">research focus</div></div>
+  <div class="stat"><div class="stat-num">24/7</div><div class="stat-label">operations</div></div>
+  <div class="stat"><div class="stat-num">OSS</div><div class="stat-label">tooling</div></div>
+</div>
+
+<section id="about">
+  <div class="section-tag">// about</div>
+  <h2>Who we are</h2>
+  <div class="cards">
+    <div class="card">
+      <div class="card-icon">&gt;_</div>
+      <h3>offensive security</h3>
+      <p>Red team operations, penetration testing methodologies, and CTF challenge development.</p>
+    </div>
+    <div class="card">
+      <div class="card-icon">#!</div>
+      <h3>vulnerability research</h3>
+      <p>Responsible disclosure, CVE coordination, and deep-dive analysis of emerging threats.</p>
+    </div>
+    <div class="card">
+      <div class="card-icon">01</div>
+      <h3>community</h3>
+      <p>Open knowledge sharing, writeups, and collaboration across the security research community.</p>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <span>[cybergroup] — </span>
+  <a href="contact.html">contact</a> · <a href="admin.html">admin</a>
+</footer>
+
+</body>
+</html>
