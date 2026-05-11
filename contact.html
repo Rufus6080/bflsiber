@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Contact — CyberGroup</title>
+<title>BFLSiber'in havalı üyelerine ulaşın</title>
 <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
@@ -31,21 +31,21 @@ select option{background:var(--surface)}
 </head>
 <body>
 <nav>
-  <a href="index.html" class="logo">[<span>cyber</span>group]</a>
-  <a href="index.html" class="back">← back</a>
+  <a href="index.html" class="logo">[<span>BFL</span>siber</a>
+  <a href="index.html" class="back">← geri</a>
 </nav>
 <main>
-  <div class="page-tag">// contact</div>
-  <h1>Get in touch</h1>
-  <p class="sub">Reach out for collaboration, vulnerability reports, or general inquiries. We read everything.</p>
+  <div class="page-tag">Ulaşın!!</div>
+  <h1>Bağlantı Kurun</h1>
+  <p class="sub">Herşey Kabülümüz</p>
 
   <div id="success" class="success">
-    message received. we'll be in touch.<br><span style="color:var(--muted);font-size:0.8rem">you can close this page.</span>
+    Mesaj başarıyla alındı. <br><span style="color:var(--muted);font-size:0.8rem">sayfadan ayrılabilirsiniz.</span>
   </div>
 
   <form id="contactForm">
     <div class="field">
-      <label>name</label>
+      <label>isim</label>
       <input type="text" id="fname" placeholder="your name" required>
     </div>
     <div class="field">
@@ -53,19 +53,19 @@ select option{background:var(--surface)}
       <input type="email" id="femail" placeholder="you@example.com" required>
     </div>
     <div class="field">
-      <label>subject</label>
+      <label>konu</label>
       <select id="fsubject">
-        <option value="collaboration">collaboration</option>
-        <option value="vuln_report">vulnerability report</option>
-        <option value="ctf">ctf / competition</option>
-        <option value="other">other</option>
+        <option value="collaboration">Collab yapalım</option>
+        <option value="vuln_report">Sitenizde bir hata buldum ezik siber güvenlikçiler sahte misiniz nesiniz</option>
+        <option value="ctf">CTF ile ilgili</option>
+        <option value="other">Konu dışı / Diğer</option>
       </select>
     </div>
     <div class="field">
-      <label>message</label>
+      <label>Mesaj</label>
       <textarea id="fmessage" placeholder="write your message here..." required></textarea>
     </div>
-    <button type="submit" class="submit">send message →</button>
+    <button type="submit" class="submit">Gönder(yani yolla) →</button>
   </form>
 </main>
 <script src="shared.js"></script>
