@@ -2,109 +2,206 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta title="Admin Dashboard">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin yeri</title>
 <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
-  /* [Your existing CSS] */
-  :root{--bg:#080c10;--surface:#0d1117;--border:#1e2a38;--accent:#00ff88;--danger:#ff4444;--text:#e2e8f0;--muted:#4a5568;--mono:'Space Mono',monospace;--sans:'Inter',sans-serif}
-  body{background:var(--bg);color:var(--text);font-family:var(--sans);margin:0;}
-  #loginScreen, #adminPanel{padding:2rem;}
-  .login-box{max-width:380px;margin:10vh auto;}
-  .field{margin-bottom:1.5rem;}
-  label{display:block;font-family:var(--mono);font-size:0.75rem;color:var(--muted);margin-bottom:0.5rem;}
-  input{width:100%;background:var(--surface);border:1px solid var(--border);padding:0.8rem;color:var(--text);font-family:var(--mono);}
-  .btn{background:var(--accent);color:#000;border:none;padding:0.8rem 1.5rem;font-family:var(--mono);font-weight:700;cursor:pointer;width:100%;}
-  .nav-tabs{display:flex;gap:1rem;margin-bottom:2rem;border-bottom:1px solid var(--border);padding-bottom:1rem;}
-  .nav-tab{cursor:pointer;font-family:var(--mono);font-size:0.8rem;color:var(--muted);}
-  .nav-tab.active{color:var(--accent);}
-  .page{display:none;}
-  .page.active{display:block;}
-  .contact-card{background:var(--surface);padding:1rem;border:1px solid var(--border);margin-bottom:1rem;}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--bg:#080c10;--surface:#0d1117;--border:#1e2a38;--accent:#00ff88;--danger:#ff4444;--text:#e2e8f0;--muted:#4a5568;--mono:'Space Mono',monospace;--sans:'Inter',sans-serif}
+body{background:var(--bg);color:var(--text);font-family:var(--sans);min-height:100vh}
+
+/* login */
+#loginScreen{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:2rem}
+.login-box{width:100%;max-width:380px}
+.login-tag{font-family:var(--mono);font-size:0.7rem;color:var(--accent);letter-spacing:0.2em;margin-bottom:1.5rem}
+.login-box h1{font-size:1.75rem;font-weight:300;letter-spacing:-0.02em;margin-bottom:2rem}
+.field{margin-bottom:1.25rem}
+label{display:block;font-family:var(--mono);font-size:0.7rem;color:var(--muted);letter-spacing:0.1em;margin-bottom:0.4rem}
+input{width:100%;background:var(--surface);border:1px solid var(--border);color:var(--text);font-family:var(--mono);font-size:0.9rem;padding:0.7rem 1rem;border-radius:4px;outline:none;transition:border-color 0.2s}
+input:focus{border-color:var(--accent)}
+.btn{width:100%;background:var(--accent);color:#000;font-family:var(--mono);font-size:0.85rem;font-weight:700;padding:0.8rem;border:none;border-radius:4px;cursor:pointer;transition:opacity 0.2s;margin-top:0.5rem}
+.btn:hover{opacity:0.85}
+.btn-ghost{background:transparent;color:var(--muted);border:1px solid var(--border)}
+.btn-ghost:hover{color:var(--text);border-color:var(--text);opacity:1}
+.btn-danger{background:var(--danger);color:#fff}
+.error{color:var(--danger);font-family:var(--mono);font-size:0.75rem;margin-top:1rem;display:none}
+
+/* dashboard */
+#dashboard{display:none}
+nav{display:flex;align-items:center;justify-content:space-between;padding:1rem 2rem;border-bottom:1px solid var(--border)}
+.logo{font-family:var(--mono);font-size:0.9rem;color:var(--accent)}
+.logo span{color:var(--muted)}
+.nav-right{display:flex;gap:1rem;align-items:center}
+.nav-tab{font-family:var(--mono);font-size:0.75rem;color:var(--muted);cursor:pointer;padding:0.4rem 0.75rem;border-radius:4px;border:1px solid transparent;transition:all 0.15s}
+.nav-tab:hover,.nav-tab.active{color:var(--accent);border-color:var(--accent)}
+.nav-logout{font-family:var(--mono);font-size:0.75rem;color:var(--danger);cursor:pointer;padding:0.4rem 0.75rem;border:1px solid transparent;border-radius:4px}
+.nav-logout:hover{border-color:var(--danger)}
+.nav-back{font-family:var(--mono);font-size:0.75rem;color:var(--muted);text-decoration:none;padding:0.4rem 0.75rem;border:1px solid transparent;border-radius:4px;transition:all 0.15s;display:inline-flex;align-items:center;gap:0.3rem}
+.nav-back:hover{color:var(--text);border-color:var(--border)}
+
+main{padding:2.5rem 2rem;max-width:900px;margin:0 auto}
+.page{display:none}
+.page.active{display:block}
+.page-title{font-family:var(--mono);font-size:0.7rem;color:var(--accent);letter-spacing:0.2em;margin-bottom:0.75rem}
+h2{font-size:1.5rem;font-weight:300;letter-spacing:-0.02em;margin-bottom:2rem}
+
+/* contacts table */
+.contacts-empty{font-family:var(--mono);font-size:0.85rem;color:var(--muted);padding:3rem;text-align:center;border:1px solid var(--border);border-radius:4px}
+.contact-card{background:var(--surface);border:1px solid var(--border);border-radius:4px;padding:1.25rem 1.5rem;margin-bottom:1px;transition:border-color 0.15s}
+.contact-card:hover{border-color:#2a3a4a}
+.contact-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:0.5rem}
+.contact-name{font-weight:500;font-size:0.95rem}
+.contact-date{font-family:var(--mono);font-size:0.7rem;color:var(--muted)}
+.contact-email{font-family:var(--mono);font-size:0.75rem;color:var(--accent);margin-bottom:0.5rem}
+.contact-subject{display:inline-block;font-family:var(--mono);font-size:0.7rem;background:rgba(0,102,255,0.1);color:#6699ff;padding:2px 8px;border-radius:3px;margin-bottom:0.75rem}
+.contact-msg{font-size:0.85rem;color:var(--muted);line-height:1.6}
+.delete-btn{font-family:var(--mono);font-size:0.7rem;color:var(--muted);background:none;border:none;cursor:pointer;padding:2px 6px}
+.delete-btn:hover{color:var(--danger)}
+
+/* change password */
+.pw-box{max-width:400px}
+.msg{font-family:var(--mono);font-size:0.8rem;margin-top:1rem;display:none}
+.msg.success{color:var(--accent)}
+.msg.error-msg{color:var(--danger)}
 </style>
 </head>
 <body>
 
+
+<!-- LOGIN -->
 <div id="loginScreen">
   <div class="login-box">
-    <h1>Login</h1>
-    <div class="field"><label>Username</label><input type="text" id="user"></div>
-    <div class="field"><label>Password</label><input type="password" id="pass"></div>
-    <button class="btn" onclick="handleLogin()">Authorize →</button>
+    <div class="login-tag">// Admin Girişi</div>
+    <h1>Giriş yap</h1>
+    <div class="field"><label>username</label><input type="text" id="uname" autocomplete="username"></div>
+    <div class="field"><label>password</label><input type="password" id="upass" autocomplete="current-password"></div>
+    <button class="btn" onclick="doLogin()">authenticate →</button>
+    <div class="error" id="loginError">Yanlış bildin agla</div>
+    <a href="https://bflsiber.pages.dev" style="display:block;margin-top:1rem;font-family:var(--mono);font-size:0.75rem;color:var(--danger);text-decoration:none;text-align:center;transition:opacity 0.2s" onmouseover="this.style.opacity='0.7'" onmouseout="this.style.opacity='1'">← geri</a>
   </div>
 </div>
 
-<div id="adminPanel" style="display:none;">
-  <div class="nav-tabs">
-    <span class="nav-tab active" onclick="showPage('messages',this)">messages</span>
-    <span class="nav-tab" onclick="showPage('files',this)">file_server</span>
-    <span class="nav-tab" onclick="showPage('settings',this)">settings</span>
-    <span class="nav-tab" onclick="logout()">logout</span>
-  </div>
+<!-- DASHBOARD -->
+<div id="dashboard">
+  <nav>
+    <div class="logo">[<span>cyber</span>group] <span style="color:var(--muted);font-size:0.75rem">/ admin</span></div>
+    <div class="nav-right">
+      <span class="nav-tab active" onclick="showPage('contacts',this)">contacts</span>
+      <span class="nav-tab" onclick="showPage('changepw',this)">change password</span>
+      <a class="nav-back" href="https://bflsiber.pages.dev">← geri</a>
+      <span class="nav-logout" onclick="logout()">logout</span>
+    </div>
+  </nav>
+  <main>
 
-  <div id="page-messages" class="page active">
-    <div id="contactsList"></div>
-  </div>
+    <!-- contacts page -->
+    <div id="page-contacts" class="page active">
+      <div class="page-title">// Submissions</div>
+      <h2>Inbox</h2>
+      <div id="contactsList"></div>
+    </div>
 
-  <div id="page-files" class="page">
-    <h2>Manage Dropbox</h2>
-    <p style="color:var(--muted); font-size:0.9rem; margin-bottom:1rem;">
-      Files are hosted on GitHub Releases to support large sizes (up to 2GB).
-    </p>
-    <a href="https://github.com/YOUR_GITHUB_USERNAME/YOUR_REPO_NAME/releases" target="_blank" class="btn" style="display:inline-block; text-align:center;">
-      Open GitHub to Upload Files →
-    </a>
-  </div>
+    <!-- change password page -->
+    <div id="page-changepw" class="page">
+      <div class="page-title">// security</div>
+      <h2>Şifreyi Değiştir</h2>
+      <div class="pw-box">
+        <div class="field"><label>new password</label><input type="password" id="newpw" placeholder="enter new password"></div>
+        <div class="field"><label>confirm password</label><input type="password" id="confirmpw" placeholder="confirm new password"></div>
+        <button class="btn" onclick="doChangePw()">update password →</button>
+        <div class="msg success" id="pwSuccess">password updated successfully</div>
+        <div class="msg error-msg" id="pwError"></div>
+      </div>
+    </div>
 
-  <div id="page-settings" class="page">
-    <h2>Change Password</h2>
-    <div class="field"><label>New Password</label><input type="password" id="newpw"></div>
-    <button class="btn" onclick="doChangePw()">Update Password</button>
-  </div>
+  </main>
 </div>
 
 <script src="shared.js"></script>
 <script>
-  if(isLoggedIn()) {
-    document.getElementById('loginScreen').style.display = 'none';
-    document.getElementById('adminPanel').style.display = 'block';
-    renderContacts();
-  }
+window.addEventListener('load', () => {
+  if (isLoggedIn()) showDashboard();
+});
 
-  async function handleLogin() {
-    const u = document.getElementById('user').value;
-    const p = document.getElementById('pass').value;
-    if(await checkLogin(u, p)) {
-      setSession();
-      location.reload();
-    } else { alert('Access Denied'); }
-  }
+document.getElementById('upass').addEventListener('keydown', e => { if(e.key==='Enter') doLogin(); });
 
-  function showPage(id, el) {
-    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-    document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
-    document.getElementById('page-' + id).classList.add('active');
-    el.classList.add('active');
-  }
+async function doLogin() {
+  const u = document.getElementById('uname').value;
+  const p = document.getElementById('upass').value;
+  const ok = await checkLogin(u, p);
+  if (ok) { setSession(); showDashboard(); }
+  else { document.getElementById('loginError').style.display = 'block'; }
+}
 
-  function renderContacts() {
-    const list = document.getElementById('contactsList');
-    const entries = getContacts();
-    list.innerHTML = entries.map((e, i) => `
-      <div class="contact-card">
-        <strong>${e.name}</strong> (${e.email})<br>
-        <small>${e.subject}</small><br><br>
-        <p>${e.message}</p>
+function showDashboard() {
+  document.getElementById('loginScreen').style.display = 'none';
+  document.getElementById('dashboard').style.display = 'block';
+  renderContacts();
+}
+
+function showPage(name, el) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('page-' + name).classList.add('active');
+  el.classList.add('active');
+  if (name === 'contacts') renderContacts();
+}
+
+function renderContacts() {
+  const entries = getContacts();
+  const el = document.getElementById('contactsList');
+  if (!entries.length) {
+    el.innerHTML = '<div class="contacts-empty">no submissions yet</div>';
+    return;
+  }
+  el.innerHTML = entries.map((e, i) => `
+    <div class="contact-card">
+      <div class="contact-header">
+        <div>
+          <div class="contact-name">${esc(e.name)}</div>
+          <div class="contact-email">${esc(e.email)}</div>
+        </div>
+        <div style="text-align:right">
+          <div class="contact-date">${new Date(e.date).toLocaleString()}</div>
+          <button class="delete-btn" onclick="deleteContact(${i})">✕ delete</button>
+        </div>
       </div>
-    `).join('');
-  }
+      <span class="contact-subject">${esc(e.subject)}</span>
+      <div class="contact-msg">${esc(e.message)}</div>
+    </div>
+  `).join('');
+}
 
-  async function doChangePw() {
-    const np = document.getElementById('newpw').value;
-    if(np) {
-      await changePassword(np);
-      alert('Password updated!');
-    }
-  }
+function deleteContact(i) {
+  const entries = getContacts();
+  entries.splice(i, 1);
+  localStorage.setItem('contact_entries', JSON.stringify(entries));
+  renderContacts();
+}
+
+async function doChangePw() {
+  const np = document.getElementById('newpw').value;
+  const cp = document.getElementById('confirmpw').value;
+  document.getElementById('pwSuccess').style.display = 'none';
+  document.getElementById('pwError').style.display = 'none';
+  if (!np) { showPwErr('password cannot be empty'); return; }
+  if (np !== cp) { showPwErr('passwords do not match'); return; }
+  if (np.length < 8) { showPwErr('minimum 8 characters'); return; }
+  await changePassword(np);
+  document.getElementById('newpw').value = '';
+  document.getElementById('confirmpw').value = '';
+  document.getElementById('pwSuccess').style.display = 'block';
+}
+
+function showPwErr(msg) {
+  const el = document.getElementById('pwError');
+  el.textContent = msg;
+  el.style.display = 'block';
+}
+
+function esc(str) {
+  return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
 </script>
 </body>
 </html>
