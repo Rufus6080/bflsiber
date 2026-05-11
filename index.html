@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="tr">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -22,7 +22,7 @@
 body{background:var(--bg);color:var(--text);font-family:var(--sans);min-height:100vh;overflow-x:hidden}
 a{color:inherit;text-decoration:none}
 
-/* nav */
+/* NAV */
 nav{display:flex;align-items:center;justify-content:space-between;padding:1.25rem 2rem;border-bottom:1px solid var(--border);position:sticky;top:0;background:rgba(8,12,16,0.95);backdrop-filter:blur(8px);z-index:100}
 .logo{font-family:var(--mono);font-size:1rem;color:var(--accent);letter-spacing:0.05em}
 .logo span{color:var(--muted)}
@@ -31,103 +31,217 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:1.25re
 .nav-links a.cta{color:var(--accent);border:1px solid var(--accent);padding:0.4rem 1rem;border-radius:4px;font-family:var(--mono);font-size:0.8rem;transition:background 0.2s}
 .nav-links a.cta:hover{background:rgba(0,255,136,0.1)}
 
-/* hero */
+/* HERO */
 .hero{min-height:90vh;display:flex;align-items:center;padding:4rem 2rem;position:relative;overflow:hidden}
-.hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 20% 50%, rgba(0,102,255,0.08) 0%, transparent 60%), radial-gradient(ellipse at 80% 20%, rgba(0,255,136,0.05) 0%, transparent 50%);pointer-events:none}
-.grid-bg{position:absolute;inset:0;background-image:linear-gradient(var(--border) 1px,transparent 1px),linear-gradient(90deg,var(--border) 1px,transparent 1px);background-size:40px 40px;opacity:0.3;pointer-events:none}
+.scanlines{position:absolute;inset:0;background:repeating-linear-gradient(0deg,transparent,transparent 3px,rgba(0,0,0,0.15) 3px,rgba(0,0,0,0.15) 4px);pointer-events:none;opacity:0.4}
 .hero-content{max-width:700px;position:relative;z-index:1}
 .hero-tag{font-family:var(--mono);font-size:0.75rem;color:var(--accent);letter-spacing:0.15em;text-transform:uppercase;margin-bottom:1.5rem;display:flex;align-items:center;gap:0.5rem}
 .hero-tag::before{content:'';width:24px;height:1px;background:var(--accent)}
 h1{font-size:clamp(2.5rem,6vw,4.5rem);font-weight:300;line-height:1.1;letter-spacing:-0.03em;margin-bottom:1.5rem}
-h1 strong{font-weight:500;color:var(--accent)}
+h1 strong{font-weight:700;color:var(--accent);font-family:var(--mono)}
+.blink{animation:blink 1.1s step-end infinite}
+@keyframes blink{50%{opacity:0}}
 .hero-desc{font-size:1.05rem;color:var(--muted);line-height:1.8;max-width:520px;margin-bottom:2.5rem}
+.hero-desc em{color:var(--text);font-style:normal}
 .hero-actions{display:flex;gap:1rem;flex-wrap:wrap}
-.btn-primary{background:var(--accent);color:#000;font-family:var(--mono);font-size:0.85rem;padding:0.75rem 1.75rem;border-radius:4px;font-weight:700;transition:opacity 0.2s}
+.btn-primary{background:var(--accent);color:#000;font-family:var(--mono);font-size:0.85rem;padding:0.75rem 1.75rem;border-radius:0;font-weight:700;transition:opacity 0.2s;letter-spacing:0.05em}
 .btn-primary:hover{opacity:0.85}
-.btn-ghost{border:1px solid var(--border);color:var(--muted);font-family:var(--mono);font-size:0.85rem;padding:0.75rem 1.75rem;border-radius:4px;transition:border-color 0.2s,color 0.2s}
+.btn-ghost{border:1px solid var(--border);color:var(--muted);font-family:var(--mono);font-size:0.85rem;padding:0.75rem 1.75rem;border-radius:0;transition:border-color 0.2s,color 0.2s;letter-spacing:0.05em}
 .btn-ghost:hover{border-color:var(--text);color:var(--text)}
 
-/* stats */
+/* STATS */
 .stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:1px;background:var(--border);border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
 .stat{background:var(--surface);padding:2rem;text-align:center}
-.stat-num{font-family:var(--mono);font-size:2rem;color:var(--accent);font-weight:700}
-.stat-label{font-size:0.8rem;color:var(--muted);margin-top:0.25rem;letter-spacing:0.05em}
+.stat-num{font-family:var(--mono);font-size:1.6rem;color:var(--accent);font-weight:700;letter-spacing:0.05em}
+.stat-label{font-size:0.75rem;color:var(--muted);margin-top:0.4rem;letter-spacing:0.08em;text-transform:uppercase}
 
-/* sections */
+/* SECTIONS */
 section{padding:5rem 2rem;max-width:1100px;margin:0 auto}
 .section-tag{font-family:var(--mono);font-size:0.7rem;color:var(--accent2);letter-spacing:0.2em;text-transform:uppercase;margin-bottom:1rem}
 h2{font-size:clamp(1.5rem,3vw,2.5rem);font-weight:300;margin-bottom:3rem;letter-spacing:-0.02em}
 
-/* cards */
+/* CARDS */
 .cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1px;background:var(--border)}
-.card{background:var(--surface);padding:2rem;transition:background 0.2s}
-.card:hover{background:#111820}
+.card{background:var(--surface);padding:2rem;transition:background 0.2s;border-left:3px solid transparent}
+.card:hover{background:#111820;border-left-color:var(--accent)}
 .card-icon{font-family:var(--mono);font-size:1.5rem;color:var(--accent);margin-bottom:1rem}
-.card h3{font-size:1rem;font-weight:500;margin-bottom:0.75rem}
+.card h3{font-size:0.9rem;font-weight:700;margin-bottom:0.75rem;font-family:var(--mono);text-transform:lowercase;color:var(--text)}
 .card p{font-size:0.9rem;color:var(--muted);line-height:1.7}
 
-/* footer */
+/* TEAM */
+.team{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1px;background:var(--border)}
+.member{background:var(--surface);padding:1.75rem;transition:background 0.2s}
+.member:hover{background:#111820}
+.member-handle{font-family:var(--mono);font-size:0.95rem;color:var(--accent);margin-bottom:0.4rem}
+.member-role{font-size:0.8rem;color:var(--muted);letter-spacing:0.05em}
+
+/* BLOG / WRITEUPS */
+.posts{display:flex;flex-direction:column;gap:1px;background:var(--border)}
+.post{background:var(--surface);padding:1.5rem 2rem;display:flex;justify-content:space-between;align-items:center;transition:background 0.2s;cursor:pointer}
+.post:hover{background:#111820}
+.post-title{font-family:var(--mono);font-size:0.9rem;color:var(--text)}
+.post-meta{font-size:0.75rem;color:var(--muted);text-align:right;font-family:var(--mono)}
+.post-tag{display:inline-block;font-size:0.7rem;font-family:var(--mono);color:var(--accent2);border:1px solid var(--accent2);padding:0.1rem 0.5rem;margin-right:0.5rem;opacity:0.7}
+
+/* FOOTER */
 footer{border-top:1px solid var(--border);padding:2rem;text-align:center;font-size:0.8rem;color:var(--muted);font-family:var(--mono)}
 footer a{color:var(--accent)}
 </style>
 </head>
 <body>
 
+<!-- NAV -->
 <nav>
-  <div class="logo">[<span>BFL</span>Siber</div>
+  <div class="logo">[<span>BFL</span>Siber]</div>
   <div class="nav-links">
-    <a href="#about">Hakkında</a>
-    <a href="#services">Hizmetler</a>
-    <a href="contact.html">Bize Ulaşın</a>
-    <a href="admin.html" class="cta">Admin</a>
+    <a href="#about">hakkında</a>
+    <a href="#services">hizmetler</a>
+    <a href="#team">ekip</a>
+    <a href="#writeups">writeups</a>
+    <a href="contact.html">iletişim</a>
+    <a href="admin.html" class="cta">admin</a>
   </div>
 </nav>
 
+<!-- HERO -->
 <div class="hero">
-  <div class="grid-bg"></div>
+  <div class="scanlines"></div>
   <div class="hero-content">
     <div class="hero-tag">BFL Siber Güvenlik Grubu</div>
-    <h1>vay<br>havalı <strong>site</strong></h1>
-    <p class="hero-desc">Havalı BFL siber güvenlik grubu burda</p>
+    <!-- TODO: hero başlık -->
+    <h1>[başlık<br><strong>satır iki<span class="blink">_</span></strong><br>satır üç]</h1>
+    <!-- TODO: hero açıklama metni -->
+    <p class="hero-desc">[buraya grubun kısa açıklaması gelecek. <em>öne çıkan bir şey</em> varsa em tagı içine al.]</p>
     <div class="hero-actions">
-      <a href="contact.html" class="btn-primary">İletişim</a>
-      <a href="#about" class="btn-ghost">Daha Fazla</a>
+      <a href="contact.html" class="btn-primary">// iletişim</a>
+      <a href="#about" class="btn-ghost">daha fazla →</a>
     </div>
   </div>
 </div>
 
+<!-- STATS BAR -->
 <div class="stats">
-  <div class="stat"><div class="stat-num">CTF</div><div class="stat-label">Rakipler</div></div>
-  <div class="stat"><div class="stat-num">zero-day</div><div class="stat-label">Araştırmaları</div></div>
-  <div class="stat"><div class="stat-num">24/7</div><div class="stat-label">Aktif</div></div>
-  <div class="stat"><div class="stat-num">OSS</div><div class="stat-label">Aletleri</div></div>
+  <!-- TODO: stat değerleri ve etiketler -->
+  <div class="stat"><div class="stat-num">???</div><div class="stat-label">stat bir</div></div>
+  <div class="stat"><div class="stat-num">???</div><div class="stat-label">stat iki</div></div>
+  <div class="stat"><div class="stat-num">24/7</div><div class="stat-label">stat üç</div></div>
+  <div class="stat"><div class="stat-num">???</div><div class="stat-label">stat dört</div></div>
 </div>
 
+<!-- HAKKIMIZDA -->
 <section id="about">
-  <div class="section-tag">// about</div>
-  <h2>Biz kimiz</h2>
+  <div class="section-tag">// hakkımızda</div>
+  <!-- TODO: bölüm başlığı -->
+  <h2>[bölüm başlığı]</h2>
   <div class="cards">
+    <!-- TODO: kart 1 -->
     <div class="card">
       <div class="card-icon">&gt;_</div>
-      <h3>offensive security</h3>
-      <p>bilmem</p>
+      <h3>[kart başlığı 1]</h3>
+      <p>[kart açıklaması buraya. 2-3 cümle yeterli.]</p>
     </div>
+    <!-- TODO: kart 2 -->
     <div class="card">
       <div class="card-icon">#!</div>
-      <h3>vulnerability research</h3>
-      <p>test</p>
+      <h3>[kart başlığı 2]</h3>
+      <p>[kart açıklaması buraya. 2-3 cümle yeterli.]</p>
     </div>
+    <!-- TODO: kart 3 -->
     <div class="card">
-      <div class="card-icon">01</div>
-      <h3>community</h3>
-      <p>test</p>
+      <div class="card-icon">::</div>
+      <h3>[kart başlığı 3]</h3>
+      <p>[kart açıklaması buraya. 2-3 cümle yeterli.]</p>
     </div>
   </div>
 </section>
 
+<!-- HİZMETLER -->
+<section id="services">
+  <div class="section-tag">// hizmetler</div>
+  <!-- TODO: hizmetler başlığı -->
+  <h2>[hizmetler başlığı]</h2>
+  <div class="cards">
+    <!-- TODO: hizmet kartları — ihtiyaca göre ekle/çıkar -->
+    <div class="card">
+      <div class="card-icon">01</div>
+      <h3>[hizmet adı]</h3>
+      <p>[hizmet açıklaması.]</p>
+    </div>
+    <div class="card">
+      <div class="card-icon">02</div>
+      <h3>[hizmet adı]</h3>
+      <p>[hizmet açıklaması.]</p>
+    </div>
+    <div class="card">
+      <div class="card-icon">03</div>
+      <h3>[hizmet adı]</h3>
+      <p>[hizmet açıklaması.]</p>
+    </div>
+  </div>
+</section>
+
+<!-- EKİP -->
+<section id="team">
+  <div class="section-tag">// ekip</div>
+  <!-- TODO: ekip başlığı -->
+  <h2>[ekip başlığı]</h2>
+  <div class="team">
+    <!-- TODO: üye başına bir blok ekle -->
+    <div class="member">
+      <div class="member-handle">@handle_1</div>
+      <div class="member-role">[rol / uzmanlık]</div>
+    </div>
+    <div class="member">
+      <div class="member-handle">@handle_2</div>
+      <div class="member-role">[rol / uzmanlık]</div>
+    </div>
+    <div class="member">
+      <div class="member-handle">@handle_3</div>
+      <div class="member-role">[rol / uzmanlık]</div>
+    </div>
+    <div class="member">
+      <div class="member-handle">@handle_4</div>
+      <div class="member-role">[rol / uzmanlık]</div>
+    </div>
+  </div>
+</section>
+
+<!-- WRITEUPS / BLOG -->
+<section id="writeups">
+  <div class="section-tag">// writeups</div>
+  <!-- TODO: writeups başlığı -->
+  <h2>[writeups & blog]</h2>
+  <div class="posts">
+    <!-- TODO: her yazı için bir .post bloğu. href'i gerçek URL ile değiştir. -->
+    <a href="#" class="post">
+      <div>
+        <span class="post-tag">ctf</span>
+        <span class="post-title">[yazı başlığı buraya]</span>
+      </div>
+      <div class="post-meta">gg-aa-yyyy</div>
+    </a>
+    <a href="#" class="post">
+      <div>
+        <span class="post-tag">writeup</span>
+        <span class="post-title">[yazı başlığı buraya]</span>
+      </div>
+      <div class="post-meta">gg-aa-yyyy</div>
+    </a>
+    <a href="#" class="post">
+      <div>
+        <span class="post-tag">research</span>
+        <span class="post-title">[yazı başlığı buraya]</span>
+      </div>
+      <div class="post-meta">gg-aa-yyyy</div>
+    </a>
+  </div>
+</section>
+
+<!-- FOOTER -->
 <footer>
   <span>BFLSiber — </span>
-  <a href="contact.html">contact</a> · <a href="admin.html">admin</a>
+  <!-- TODO: sosyal linkler -->
+  <a href="#">github</a> · <a href="#">discord</a> · <a href="contact.html">iletişim</a> · <a href="admin.html">admin</a>
 </footer>
 
 </body>
