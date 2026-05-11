@@ -2,6 +2,7 @@
 const GITHUB_USER = 'Rufus6080'; // <--- Change this
 const GITHUB_REPO = 'bflsiber';      // <--- Change this
 
+// This is the missing function
 async function getDropboxFiles() {
   try {
     const response = await fetch(`https://api.github.com/repos/${GITHUB_USER}/${GITHUB_REPO}/releases/latest`);
@@ -19,6 +20,7 @@ async function getDropboxFiles() {
   }
 }
 
+// ... rest of your existing sha256, checkLogin, etc. functions ...
 const SESSION_KEY = 'admin_session';
 const CONTACTS_KEY = 'contact_entries';
 const ADMIN_HASH_KEY = 'admin_pw_hash';
