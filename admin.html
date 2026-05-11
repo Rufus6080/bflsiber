@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Admin yeri</title>
+<title>Admin Girişi</title>
 <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
@@ -76,7 +76,7 @@ h2{font-size:1.5rem;font-weight:300;letter-spacing:-0.02em;margin-bottom:2rem}
     <div class="field"><label>username</label><input type="text" id="uname" autocomplete="username"></div>
     <div class="field"><label>password</label><input type="password" id="upass" autocomplete="current-password"></div>
     <button class="btn" onclick="doLogin()">Login →</button>
-    <div class="error" id="loginError">Yanlış bildin agla</div>
+    <div class="error" id="loginError">Yanlış Şifre</div>
     <a href="https://bflsiber.pages.dev" style="display:block;margin-top:1rem;font-family:var(--mono);font-size:0.75rem;color:var(--danger);text-decoration:none;text-align:center;transition:opacity 0.2s" onmouseover="this.style.opacity='0.7'" onmouseout="this.style.opacity='1'">← geri</a>
   </div>
 </div>
@@ -84,7 +84,7 @@ h2{font-size:1.5rem;font-weight:300;letter-spacing:-0.02em;margin-bottom:2rem}
 <!-- DASHBOARD -->
 <div id="dashboard">
   <nav>
-    <div class="logo">[<span>cyber</span>group] <span style="color:var(--muted);font-size:0.75rem">/ admin</span></div>
+    <div class="logo"><span>BFL</span>Siber <span style="color:var(--muted);font-size:0.75rem">/ admin</span></div>
     <div class="nav-right">
       <span class="nav-tab" onclick="showPage('files',this)">files</span>
       <span class="nav-tab active" onclick="showPage('contacts',this)">contacts</span>
