@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="tr">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,55 +7,178 @@
 <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-:root{--bg:#000000;--surface:#0d1117;--border:#00ff00;--accent:#00ff00;--text:#00ff00;--muted:#00ff00;--mono:'Space Mono',monospace;--sans:'Inter',sans-serif}
+:root{
+  --bg:#000000;
+  --surface:#0d1117;
+  --border:#00ff00;
+  --accent:#00ff00;
+  --text:#00ff00;
+  --muted:rgba(0,255,0,0.5);
+  --mono:'Space Mono',monospace;
+  --sans:'Inter',sans-serif;
+}
 body{background:var(--bg);color:var(--text);font-family:var(--sans);min-height:100vh}
-nav{display:flex;align-items:center;justify-content:space-between;padding:1.25rem 2rem;border-bottom:1px solid var(--border)}
-.logo{font-family:var(--mono);font-size:1rem;color:var(--accent)}
+
+/* Nav sits ABOVE the overlay */
+nav{
+  position:relative;
+  z-index:1100;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:1.25rem 2rem;
+  border-bottom:1px solid rgba(0,255,0,0.3);
+  background:rgba(0,0,0,0.95);
+}
+.logo{font-family:var(--mono);font-size:1rem;color:var(--accent);text-decoration:none}
 .logo span{color:var(--muted)}
-.back{font-family:var(--mono);font-size:0.8rem;color:var(--muted)}
-.back:hover{color:var(--text)}
-main{max-width:600px;margin:6rem auto;padding:0 2rem}
-.page-tag{font-family:var(--mono);font-size:0.7rem;color:var(--accent);letter-spacing:0.2em;text-transform:uppercase;margin-bottom:1rem}
-h1{font-size:2.5rem;font-weight:300;letter-spacing:-0.03em;margin-bottom:0.75rem}
-.sub{color:var(--muted);font-size:0.95rem;line-height:1.7;margin-bottom:3rem}
+.back{
+  font-family:var(--mono);font-size:0.75rem;
+  color:var(--accent);
+  text-decoration:none;
+  border:1px solid rgba(0,255,0,0.35);
+  padding:0.35rem 0.9rem;
+  border-radius:3px;
+  letter-spacing:0.05em;
+  transition:background 0.2s,box-shadow 0.2s;
+}
+.back:hover{
+  background:rgba(0,255,0,0.08);
+  box-shadow:0 0 10px rgba(0,255,0,0.15);
+}
+
+main{max-width:600px;margin:5rem auto;padding:0 2rem}
+.page-tag{font-family:var(--mono);font-size:0.65rem;color:var(--muted);letter-spacing:0.25em;text-transform:uppercase;margin-bottom:1rem}
+h1{font-size:2.5rem;font-weight:300;letter-spacing:-0.03em;margin-bottom:0.75rem;color:var(--accent)}
+.sub{color:var(--muted);font-size:0.9rem;line-height:1.7;margin-bottom:3rem;font-family:var(--mono)}
 .field{margin-bottom:1.5rem}
-label{display:block;font-family:var(--mono);font-size:0.75rem;color:var(--muted);letter-spacing:0.1em;margin-bottom:0.5rem}
-input,textarea,select{width:100%;background:var(--surface);border:1px solid var(--border);color:var(--text);font-family:var(--sans);font-size:0.95rem;padding:0.75rem 1rem;border-radius:4px;outline:none;transition:border-color 0.2s}
-input:focus,textarea:focus,select:focus{border-color:var(--accent)}
+label{display:block;font-family:var(--mono);font-size:0.7rem;color:var(--muted);letter-spacing:0.12em;text-transform:uppercase;margin-bottom:0.5rem}
+input,textarea,select{
+  width:100%;background:var(--surface);
+  border:1px solid rgba(0,255,0,0.3);
+  color:var(--accent);
+  font-family:var(--mono);font-size:0.85rem;
+  padding:0.75rem 1rem;border-radius:3px;outline:none;
+  transition:border-color 0.2s,box-shadow 0.2s;
+}
+input::placeholder,textarea::placeholder{color:rgba(0,255,0,0.25)}
+input:focus,textarea:focus,select:focus{
+  border-color:var(--accent);
+  box-shadow:0 0 12px rgba(0,255,0,0.1);
+}
 textarea{resize:vertical;min-height:140px}
-select option{background:var(--surface)}
-.submit{width:100%;background:var(--accent);color:#000;font-family:var(--mono);font-size:0.9rem;font-weight:700;padding:0.875rem;border:none;border-radius:4px;cursor:pointer;transition:opacity 0.2s}
-.submit:hover{opacity:0.85}
-.submit:disabled{opacity:0.5;cursor:not-allowed}
-.form-error{display:none;font-family:var(--mono);font-size:0.8rem;color:#ff4444;margin-top:0.75rem;text-align:center}
-.success{display:none;background:rgba(0,255,136,0.08);border:1px solid rgba(0,255,136,0.3);border-radius:4px;padding:1.5rem;text-align:center;font-family:var(--mono);font-size:0.9rem;color:var(--accent)}
+select option{background:#0d1117;color:#00ff00}
+.submit{
+  width:100%;background:transparent;
+  color:var(--accent);
+  font-family:var(--mono);font-size:0.85rem;font-weight:700;
+  padding:0.875rem;
+  border:1px solid var(--accent);
+  border-radius:3px;cursor:pointer;
+  letter-spacing:0.1em;
+  transition:background 0.2s,box-shadow 0.2s;
+}
+.submit:hover{background:rgba(0,255,0,0.08);box-shadow:0 0 18px rgba(0,255,0,0.15)}
+.submit:disabled{opacity:0.4;cursor:not-allowed}
+.form-error{display:none;font-family:var(--mono);font-size:0.75rem;color:#ff4444;margin-top:0.75rem;text-align:center}
+.success{display:none;background:rgba(0,255,0,0.05);border:1px solid rgba(0,255,0,0.25);border-radius:3px;padding:1.5rem;text-align:center;font-family:var(--mono);font-size:0.85rem;color:var(--accent)}
+
+/* Overlay: below nav, blocks form */
+.overlay{
+  position:fixed;
+  top:0;left:0;right:0;bottom:0;
+  background:rgba(0,0,0,0.88);
+  display:flex;align-items:center;justify-content:center;
+  z-index:1000;
+}
+.overlay-card{
+  font-family:var(--mono);
+  color:var(--accent);
+  text-align:center;
+  background:#000;
+  border:1px solid rgba(0,255,0,0.2);
+  border-top:1px solid rgba(0,255,0,0.6);
+  padding:2.2rem 3rem;
+  border-radius:2px;
+  box-shadow:0 0 60px rgba(0,255,0,0.05),inset 0 0 60px rgba(0,0,0,0.5);
+  animation:fadeUp 0.5s cubic-bezier(0.16,1,0.3,1) both;
+  max-width:420px;width:90%;
+}
+@keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+.overlay-label{
+  font-size:0.55rem;letter-spacing:0.35em;text-transform:uppercase;
+  color:var(--muted);margin-bottom:1.2rem;
+}
+.overlay-divider{
+  width:100%;height:1px;
+  background:linear-gradient(90deg,transparent,rgba(0,255,0,0.3),transparent);
+  margin:1rem 0;
+}
+.overlay-emails{font-size:0.82rem;line-height:2.4}
+.overlay-emails a{
+  color:var(--accent);text-decoration:none;
+  border-bottom:1px solid rgba(0,255,0,0.2);
+  transition:border-color 0.2s,text-shadow 0.2s;
+}
+.overlay-emails a:hover{
+  border-color:var(--accent);
+  text-shadow:0 0 8px rgba(0,255,0,0.5);
+}
+.overlay-or{
+  font-size:0.58rem;color:var(--muted);
+  display:block;margin:0.2rem 0;letter-spacing:0.2em;
+}
+.overlay-note{
+  font-size:0.58rem;color:rgba(0,255,0,0.25);
+  letter-spacing:0.08em;margin-top:0.5rem;line-height:1.7;
+}
+/* Blinking cursor effect */
+.blink{animation:blink 1s step-end infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
 </style>
 </head>
 <body>
+
+<!-- Nav is z-index 1100, always above overlay (z-index 1000) -->
 <nav>
-  <a href="index.html" class="logo">BFL</span>Siber</a>
-  <a href="index.html" class="back">← Geri</a>
+  <a href="https://bflsiber.pages.dev" class="logo">BFL<span>Siber</span></a>
+  <a href="https://bflsiber.pages.dev" class="back">← Geri</a>
 </nav>
+
+<!-- Overlay blocks the form but nav is above it -->
+<div class="overlay">
+  <div class="overlay-card">
+    <div class="overlay-label">// iletişim bilgisi <span class="blink">_</span></div>
+    <div class="overlay-divider"></div>
+    <div class="overlay-emails">
+      <a href="mailto:bflsiber@gmail.com">bflsiber@gmail.com</a>
+      <span class="overlay-or">— veya —</span>
+      <a href="mailto:artful617@gmail.com">artful617@gmail.com</a>
+    </div>
+    <div class="overlay-divider"></div>
+    <div class="overlay-note">tüm mesajlarınızı yukarıdaki adreslere iletebilirsiniz</div>
+  </div>
+</div>
+
 <main>
   <div class="page-tag">İletişim</div>
   <h1>Bize Ulaşın</h1>
   <p class="sub">Her türlü geri bildirime açığız</p>
 
   <div id="success" class="success">
-    Mesaj başarıyla alındı. <br><span style="color:var(--muted);font-size:0.8rem">Sayfadan ayrılabilirsiniz.</span>
+    Mesaj başarıyla alındı.<br>
+    <span style="color:var(--muted);font-size:0.78rem">Sayfadan ayrılabilirsiniz.</span>
   </div>
 
   <form id="contactForm">
     <div class="field">
-      <label>İsim:</label>
-      <input type="text" id="fname" placeholder="İsim" required>
+      <label>İsim</label>
+      <input type="text" id="fname" placeholder="isim..." required>
     </div>
     <div class="field">
-      <label>Email:</label>
+      <label>Email</label>
       <input type="email" id="femail" placeholder="isim@example.com" required>
     </div>
     <div class="field">
-      <label>Konu:</label>
+      <label>Konu</label>
       <select id="fsubject">
         <option value="collaboration">İşbirliği</option>
         <option value="vuln_report">Bug Report / Güvenlik Açığı Bildirme</option>
@@ -64,23 +187,22 @@ select option{background:var(--surface)}
       </select>
     </div>
     <div class="field">
-      <label>İleti:</label>
-      <textarea id="fmessage" placeholder="write your message here..." required></textarea>
+      <label>İleti</label>
+      <textarea id="fmessage" placeholder="mesajınızı buraya yazın..." required></textarea>
     </div>
     <button type="submit" class="submit" id="submitBtn">Gönder →</button>
     <div class="form-error" id="formError">Bir hata oluştu. Lütfen tekrar deneyin.</div>
   </form>
 </main>
+
 <script>
 document.getElementById('contactForm').addEventListener('submit', async function(e) {
   e.preventDefault();
-
   const btn     = document.getElementById('submitBtn');
   const errorEl = document.getElementById('formError');
-  btn.disabled     = true;
-  btn.textContent  = 'Gönderiliyor…';
+  btn.disabled    = true;
+  btn.textContent = 'Gönderiliyor…';
   errorEl.style.display = 'none';
-
   const entry = {
     name:    document.getElementById('fname').value,
     email:   document.getElementById('femail').value,
@@ -88,7 +210,6 @@ document.getElementById('contactForm').addEventListener('submit', async function
     message: document.getElementById('fmessage').value,
     date:    new Date().toISOString()
   };
-
   try {
     const res = await fetch('https://admin-bflsiber.pages.dev/contacts', {
       method:  'POST',
