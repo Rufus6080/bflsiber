@@ -1,224 +1,329 @@
 <!DOCTYPE html>
-<html lang="tr">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Admin - BFLSiber</title>
+<title>Admin Girişi</title>
 <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-:root{
-  --bg:#000000;
-  --surface:#0d1117;
-  --border:#00ff00;
-  --accent:#00ff00;
-  --text:#00ff00;
-  --muted:#00ff00;
-  --mono:'Space Mono',monospace;
-  --sans:'Inter',sans-serif;
-  --error:#ff3333;
-}
+:root{--bg:#000000;--surface:#00ff00;--border:#00ff00;--accent:#FFFFFF;--danger:#FF0000;--text:#FFFFFF;--muted:#FFFFFF;--mono:'Space Mono',monospace;--sans:'Inter',sans-serif}
 body{background:var(--bg);color:var(--text);font-family:var(--sans);min-height:100vh}
-nav{display:flex;align-items:center;justify-content:space-between;padding:1.25rem 2rem;border-bottom:1px solid var(--border)}
-.logo{font-family:var(--mono);font-size:1rem;color:var(--accent);text-decoration:none}
-.back{font-family:var(--mono);font-size:0.8rem;color:var(--muted);text-decoration:none;background:transparent;border:none;cursor:pointer}
-.back:hover{color:var(--text);opacity:0.8}
-main{max-width:600px;margin:6rem auto;padding:0 2rem}
-.page-tag{font-family:var(--mono);font-size:0.7rem;color:var(--accent);letter-spacing:0.2em;text-transform:uppercase;margin-bottom:1rem}
-h1{font-size:2.5rem;font-weight:300;letter-spacing:-0.03em;margin-bottom:0.75rem}
-.sub{color:var(--muted);font-size:0.95rem;line-height:1.7;margin-bottom:3rem}
-
-/* Form Elemanları */
-.field{margin-bottom:1.5rem}
-label{display:block;font-family:var(--mono);font-size:0.75rem;color:var(--muted);letter-spacing:0.1em;margin-bottom:0.5rem}
-input{width:100%;background:var(--surface);border:1px solid var(--border);color:var(--text);font-family:var(--sans);font-size:0.95rem;padding:0.75rem 1rem;border-radius:4px;outline:none;transition:border-color 0.2s}
+/* login */
+#loginScreen{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:2rem}
+.login-box{width:100%;max-width:380px}
+.login-tag{font-family:var(--mono);font-size:0.7rem;color:var(--accent);letter-spacing:0.2em;margin-bottom:1.5rem}
+.login-box h1{font-size:1.75rem;font-weight:300;letter-spacing:-0.02em;margin-bottom:2rem}
+.field{margin-bottom:1.25rem}
+label{display:block;font-family:var(--mono);font-size:0.7rem;color:var(--muted);letter-spacing:0.1em;margin-bottom:0.4rem}
+input{width:100%;background:var(--surface);border:1px solid var(--border);color:#000;font-family:var(--mono);font-size:0.9rem;padding:0.7rem 1rem;border-radius:4px;outline:none;transition:border-color 0.2s}
+input::placeholder{color:#006600}
 input:focus{border-color:var(--accent)}
-.submit{width:100%;background:var(--accent);color:#000;font-family:var(--mono);font-size:0.9rem;font-weight:700;padding:0.875rem;border:none;border-radius:4px;cursor:pointer;transition:opacity 0.2s}
-.submit:hover{opacity:0.85}
+.btn{width:100%;background:var(--accent);color:#000;font-family:var(--mono);font-size:0.85rem;font-weight:700;padding:0.8rem;border:none;border-radius:4px;cursor:pointer;transition:opacity 0.2s;margin-top:0.5rem}
+.btn:hover{opacity:0.85}
+.btn-ghost{background:transparent;color:var(--muted);border:1px solid var(--border)}
+.btn-ghost:hover{color:var(--text);border-color:var(--text);opacity:1}
+.btn-danger{background:var(--danger);color:#fff}
+.btn-sm{width:auto;padding:0.4rem 0.85rem;font-size:0.75rem;margin-top:0}
+.error{color:var(--danger);font-family:var(--mono);font-size:0.75rem;margin-top:1rem;display:none}
+/* dashboard */
+#dashboard{display:none}
+nav{display:flex;align-items:center;justify-content:space-between;padding:1rem 2rem;border-bottom:1px solid var(--border);flex-wrap:wrap;gap:0.5rem}
+.logo{font-family:var(--mono);font-size:0.9rem;color:#00ff00}
+.logo span{color:var(--muted)}
+.nav-right{display:flex;gap:0.5rem;align-items:center;flex-wrap:wrap}
+.nav-tab{font-family:var(--mono);font-size:0.75rem;color:var(--muted);cursor:pointer;padding:0.4rem 0.75rem;border-radius:4px;border:1px solid transparent;transition:all 0.15s}
+.nav-tab:hover,.nav-tab.active{color:#00ff00;border-color:#00ff00}
+.nav-logout{font-family:var(--mono);font-size:0.75rem;color:var(--danger);cursor:pointer;padding:0.4rem 0.75rem;border:1px solid transparent;border-radius:4px}
+.nav-logout:hover{border-color:var(--danger)}
+.nav-back{font-family:var(--mono);font-size:0.75rem;color:var(--muted);text-decoration:none;padding:0.4rem 0.75rem;border:1px solid transparent;border-radius:4px;transition:all 0.15s;display:inline-flex;align-items:center;gap:0.3rem}
+.nav-back:hover{color:var(--text);border-color:var(--border)}
+main{padding:2.5rem 2rem;max-width:900px;margin:0 auto}
+.page{display:none}
+.page.active{display:block}
+.page-title{font-family:var(--mono);font-size:0.7rem;color:#00ff00;letter-spacing:0.2em;margin-bottom:0.75rem}
+h2{font-size:1.5rem;font-weight:300;letter-spacing:-0.02em;margin-bottom:2rem}
+/* announcement cards */
+.ann-card{background:#0a0a0a;border:1px solid #1a1a1a;border-radius:4px;padding:1.25rem 1.5rem;margin-bottom:0.75rem;transition:border-color 0.15s}
+.ann-card:hover{border-color:#2a2a2a}
+.ann-card-head{display:flex;justify-content:space-between;align-items:flex-start;gap:1rem;margin-bottom:0.5rem}
+.ann-card-title{font-size:0.95rem;font-weight:500;color:var(--text)}
+.ann-card-date{font-family:var(--mono);font-size:0.65rem;color:#555;white-space:nowrap}
+.ann-card-body{font-size:0.85rem;color:#aaa;line-height:1.65;margin-top:0.5rem;white-space:pre-wrap}
+.ann-pin-badge{font-family:var(--mono);font-size:0.6rem;background:rgba(255,215,0,0.1);color:#ffd700;border:1px solid rgba(255,215,0,0.2);padding:1px 6px;border-radius:3px;margin-left:0.5rem;vertical-align:middle}
+.ann-empty{font-family:var(--mono);font-size:0.85rem;color:#555;padding:3rem;text-align:center;border:1px solid #1a1a1a;border-radius:4px}
+.ann-loading{font-family:var(--mono);font-size:0.75rem;color:#555;padding:2rem;text-align:center}
+.ann-error{font-family:var(--mono);font-size:0.75rem;color:var(--danger);padding:1rem;border:1px solid rgba(255,0,0,0.2);border-radius:4px;margin-bottom:1rem;background:rgba(255,0,0,0.05)}
+.ann-meta{font-family:var(--mono);font-size:0.7rem;color:#555;margin-bottom:1.5rem;display:flex;align-items:center;gap:1rem;flex-wrap:wrap}
+.ann-refresh-btn{font-family:var(--mono);font-size:0.65rem;color:#555;background:none;border:1px solid #222;padding:0.2rem 0.5rem;border-radius:3px;cursor:pointer;transition:all 0.15s}
+.ann-refresh-btn:hover{color:#00ff00;border-color:#00ff00}
+/* contacts table */
+.contacts-empty{font-family:var(--mono);font-size:0.85rem;color:var(--muted);padding:3rem;text-align:center;border:1px solid var(--border);border-radius:4px}
+.contact-card{background:#0a0a0a;border:1px solid #1a1a1a;border-radius:4px;padding:1.25rem 1.5rem;margin-bottom:1px;transition:border-color 0.15s}
+.contact-card:hover{border-color:#2a3a4a}
+.contact-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:0.5rem}
+.contact-name{font-weight:500;font-size:0.95rem}
+.contact-date{font-family:var(--mono);font-size:0.7rem;color:#555}
+.contact-email{font-family:var(--mono);font-size:0.75rem;color:#00ff00;margin-bottom:0.5rem}
+.contact-subject{display:inline-block;font-family:var(--mono);font-size:0.7rem;background:rgba(0,102,255,0.1);color:#6699ff;padding:2px 8px;border-radius:3px;margin-bottom:0.75rem}
+.contact-msg{font-size:0.85rem;color:#aaa;line-height:1.6}
+.delete-btn{font-family:var(--mono);font-size:0.7rem;color:#555;background:none;border:none;cursor:pointer;padding:2px 6px}
+.delete-btn:hover{color:var(--danger)}
 
-/* Hata ve Durum Kutuları */
-.error-msg{display:none;color:var(--error);font-family:var(--mono);font-size:0.8rem;margin-top:1rem;text-align:center}
-
-/* Dashboard Alanı */
-#dashboard-screen{display:none}
-.status-card{background:rgba(0,255,0,0.05);border:1px solid var(--border);border-radius:4px;padding:1rem 1.25rem;font-family:var(--mono);font-size:0.8rem;margin-bottom:2rem;display:flex;align-items:center;gap:0.75rem}
-.status-dot{width:8px;height:8px;border-radius:50%;background:var(--accent);box-shadow:0 0 8px var(--accent)}
-
-.announcements-list{display:flex;flex-direction:column;gap:1.5rem}
-.card{background:var(--surface);border:1px solid var(--border);border-radius:4px;padding:1.5rem}
-.card-header{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:0.75rem;border-bottom:1px dashed rgba(0,255,0,0.3);padding-bottom:0.5rem}
-.card-title{font-family:var(--mono);font-size:1.05rem;color:var(--accent);font-weight:700}
-.card-date{font-family:var(--mono);font-size:0.75rem;color:var(--muted);opacity:0.8}
-.card-body{font-size:0.95rem;line-height:1.6;white-space:pre-wrap;color:var(--text)}
-
-.loading-state{background:var(--surface);border:1px solid var(--border);border-radius:4px;padding:2rem;text-align:center;font-family:var(--mono);font-size:0.85rem;color:var(--muted)}
 </style>
 </head>
 <body>
 
-<nav>
-  <a href="index.html" class="logo">BFLSiber</a>
-  <div id="nav-action">
-    <a href="index.html" class="back">← Geri</a>
+<!-- LOGIN -->
+<div id="loginScreen">
+  <div class="login-box">
+    <div class="login-tag">// Admin Girişi</div>
+    <h1>Giriş yap</h1>
+    <div class="field"><label>password</label><input type="password" id="upass" autocomplete="current-password"></div>
+    <button class="btn" id="loginBtn" onclick="doLogin()">Login →</button>
+    <div class="error" id="loginError">Yanlış Şifre</div>
+    <a href="https://bflsiber.pages.dev" style="display:block;margin-top:1rem;font-family:var(--mono);font-size:0.75rem;color:var(--danger);text-decoration:none;text-align:center;transition:opacity 0.2s" onmouseover="this.style.opacity='0.7'" onmouseout="this.style.opacity='1'">← geri</a>
   </div>
-</nav>
+</div>
 
-<main>
-  <!-- KİMLİK DOĞRULAMA (AUTH) EKRANI -->
-  <div id="auth-screen">
-    <div class="page-tag">Admin Portalı</div>
-    <h1>Erişim Yetkisi</h1>
-    <p class="sub">Yönetim paneline erişmek için parolanızı girin</p>
+<!-- DASHBOARD -->
+<div id="dashboard">
+  <nav>
+    <div class="logo"><span style="color:#00ff00">BFL</span>Siber <span style="color:#555;font-size:0.75rem">/ admin</span></div>
+    <div class="nav-right">
+      <span class="nav-tab active" onclick="showPage('announcements',this)">📣 duyurular</span>
+      <span class="nav-tab" onclick="showPage('contacts',this)">contacts</span>
+      <a class="nav-back" href="https://bflsiber.pages.dev">← geri</a>
+      <span class="nav-logout" onclick="doLogout()">logout</span>
+    </div>
+  </nav>
 
-    <form id="adminLoginForm" onsubmit="handleLogin(event)">
-      <div class="field">
-        <label>Parola:</label>
-        <input type="password" id="adminPassword" placeholder="••••••••" required autocomplete="off">
+  <main>
+
+    <!-- ANNOUNCEMENTS PAGE -->
+    <div id="page-announcements" class="page active">
+      <div class="page-title">// duyuru kanalı</div>
+      <h2>Duyurular</h2>
+      <div class="ann-meta">
+        <span id="ann-last-updated">—</span>
+        <button class="ann-refresh-btn" onclick="loadAnnouncements(true)">↻ yenile</button>
       </div>
-      <button type="submit" class="submit">Giriş Yap →</button>
-      <div id="authError" class="error-msg">Hatalı parola! Erişim reddedildi.</div>
-    </form>
-  </div>
-
-  <!-- DASHBOARD EKRANI -->
-  <div id="dashboard-screen">
-    <div class="page-tag">Sistem Paneli</div>
-    <h1>Duyurular</h1>
-    <p class="sub">Yetkili üye paneline hoş geldiniz</p>
-
-    <div class="status-card">
-      <div class="status-dot"></div>
-      <span>Oturum Açıldı: Level 1 (Doğrulandı)</span>
+      <div id="ann-error" class="ann-error" style="display:none"></div>
+      <div id="ann-list"><div class="ann-loading">Duyurular yükleniyor…</div></div>
     </div>
 
-    <div id="announcementsContainer" class="announcements-list">
-      <div class="loading-state">Duyurular çekiliyor...</div>
+    <!-- CONTACTS PAGE -->
+    <div id="page-contacts" class="page">
+      <div class="page-title">// Submissions</div>
+      <h2>Inbox</h2>
+      <div id="contactsList"></div>
     </div>
-  </div>
-</main>
 
+  </main>
+</div>
+
+<script src="shared.js"></script>
 <script>
-const CONFIG = {
-  GIST_ID: 'e75637adcf06c0fa04a244bca28e741e',
-  DEMO_PASSWORD_HASH: '8c6976e5b5410415bde908bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918', // SHA-256 for "admin"
-  DEMO_ANNOUNCEMENTS: [
-    {
-      title: "nothing to see here",
-      content: "nothing to see here",
-      date: new Date().toISOString()
-    }
-  ]
-};
+// ── Gist ID — must match what the private admin panel pushes to ──
+const GIST_ID = 'e75637adcf06c0fa04a244bca28e741e';
+const SESSION_KEY = 'admin_session';
 
-let cachedPayload = null;
+// Gist payload cached after first fetch (shared between login + announcements)
+let gistCache = null;
 
-// SHA-256 Hash Fonksiyonu
-async function sha256(message) {
-  const msgBuffer = new TextEncoder().encode(message);
-  const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
-  const hashArray = Array.from(new Uint8Array(hashBuffer));
-  return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+// ── Boot ──
+window.addEventListener('load', async () => {
+  if (sessionStorage.getItem(SESSION_KEY) === '1') {
+    // Session still alive — use cached Gist if we have it, else fetch silently
+    showDashboard();
+  }
+  // Pre-fetch Gist in background so login is instant
+  fetchGistPayload().catch(() => {});
+});
+
+document.getElementById('upass').addEventListener('keydown', e => {
+  if (e.key === 'Enter') doLogin();
+});
+
+// ── Gist fetch — single source of truth ──
+async function fetchGistPayload() {
+  if (gistCache) return gistCache;
+
+  const metaRes = await fetch(`https://api.github.com/gists/${GIST_ID}`, { cache: 'no-cache' });
+  if (!metaRes.ok) throw new Error(`Gist API ${metaRes.status}`);
+  const meta  = await metaRes.json();
+  const files = meta.files || {};
+  const file  = files['bflsiber-data.json'] || files[Object.keys(files)[0]];
+  if (!file) throw new Error('Gist dosyası bulunamadı');
+
+  const rawRes = await fetch(file.raw_url, { cache: 'no-cache' });
+  if (!rawRes.ok) throw new Error(`Raw fetch ${rawRes.status}`);
+  const payload = await rawRes.json();
+
+  gistCache = { payload, updated: meta.updated_at };
+  return gistCache;
 }
 
-// Gist üzerinden Veri/Hash Çekme
-async function fetchGistPayload() {
-  if (cachedPayload) return cachedPayload;
+// ── Auth — password validated against Gist's passwordHash (SHA-256) ──
+async function sha256(str) {
+  const buf  = new TextEncoder().encode(str);
+  const hash = await crypto.subtle.digest('SHA-256', buf);
+  return Array.from(new Uint8Array(hash)).map(b => b.toString(16).padStart(2,'0')).join('');
+}
+
+async function doLogin() {
+  const btn = document.getElementById('loginBtn');
+  const p   = document.getElementById('upass').value;
+  if (!p) return;
+
+  btn.disabled = true;
+  btn.textContent = '…';
 
   try {
-    const res = await fetch(`https://api.github.com/gists/${CONFIG.GIST_ID}`);
-    if (res.ok) {
-      const gistData = await res.json();
-      const firstFileKey = Object.keys(gistData.files)[0];
-      const content = gistData.files[firstFileKey].content;
-
-      try {
-        cachedPayload = JSON.parse(content);
-      } catch (e) {
-        cachedPayload = {
-          passwordHash: CONFIG.DEMO_PASSWORD_HASH,
-          announcements: [{ title: "Duyuru", content: content, date: gistData.updated_at }]
-        };
-      }
-      return cachedPayload;
+    const { payload } = await fetchGistPayload();
+    const inputHash   = await sha256(p);
+    if (inputHash === payload.passwordHash) {
+      sessionStorage.setItem(SESSION_KEY, '1');
+      showDashboard();
+    } else {
+      document.getElementById('loginError').style.display = 'block';
+      setTimeout(() => document.getElementById('loginError').style.display = 'none', 3000);
     }
   } catch (err) {
-    console.warn("Gist bağlantısı kurulamadı. Varsayılan veri kullanılıyor.");
-  }
-
-  return {
-    passwordHash: CONFIG.DEMO_PASSWORD_HASH,
-    announcements: CONFIG.DEMO_ANNOUNCEMENTS
-  };
-}
-
-// Giriş Kontrolü
-async function handleLogin(e) {
-  e.preventDefault();
-  const inputPass = document.getElementById('adminPassword').value;
-  const errorDiv = document.getElementById('authError');
-  errorDiv.style.display = 'none';
-
-  const inputHash = await sha256(inputPass);
-  const payload = await fetchGistPayload();
-  const validHash = payload.passwordHash || payload.authHash || CONFIG.DEMO_PASSWORD_HASH;
-
-  if (inputHash === validHash || inputPass === payload.password) {
-    sessionStorage.setItem('authenticated', 'true');
-    renderDashboard(payload.announcements || payload);
-  } else {
-    errorDiv.style.display = 'block';
-    document.getElementById('adminPassword').value = '';
+    document.getElementById('loginError').textContent = 'Bağlantı hatası: ' + err.message;
+    document.getElementById('loginError').style.display = 'block';
+  } finally {
+    btn.disabled = false;
+    btn.textContent = 'Login →';
   }
 }
 
-// Oturumu Kapatma
-function handleLogout() {
-  sessionStorage.removeItem('authenticated');
+function showDashboard() {
+  document.getElementById('loginScreen').style.display = 'none';
+  document.getElementById('dashboard').style.display = 'block';
+  loadAnnouncements();
+}
+
+function doLogout() {
+  sessionStorage.removeItem(SESSION_KEY);
+  gistCache = null;
   location.reload();
 }
 
-// Dashboard Görünümü Render
-function renderDashboard(announcements) {
-  document.getElementById('auth-screen').style.display = 'none';
-  document.getElementById('dashboard-screen').style.display = 'block';
-  
-  // Navigasyona Çıkış Yap Butonu Ekle
-  document.getElementById('nav-action').innerHTML = `<button onclick="handleLogout()" class="back">Çıkış Yap ✕</button>`;
+// ── Tab routing ──
+function showPage(name, el) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('page-' + name).classList.add('active');
+  el.classList.add('active');
+  if (name === 'contacts')      renderContacts();
+  if (name === 'announcements') loadAnnouncements();
+}
 
-  const container = document.getElementById('announcementsContainer');
-  const list = Array.isArray(announcements) ? announcements : [announcements];
+// ── Announcements ──
+async function loadAnnouncements(force = false) {
+  if (force) gistCache = null;
 
-  if (!list || list.length === 0) {
-    container.innerHTML = `<div class="loading-state">Yayınlanmış duyuru yok.</div>`;
+  const list  = document.getElementById('ann-list');
+  const errEl = document.getElementById('ann-error');
+  errEl.style.display = 'none';
+  list.innerHTML = '<div class="ann-loading">Duyurular yükleniyor…</div>';
+
+  try {
+    const { payload, updated } = await fetchGistPayload();
+    const ts = new Date(updated).toLocaleString('tr-TR');
+    document.getElementById('ann-last-updated').textContent = `Son güncelleme: ${ts}`;
+    renderAnnouncements(payload);
+  } catch (err) {
+    errEl.textContent = `⚠ Duyurular yüklenemedi: ${err.message}`;
+    errEl.style.display = 'block';
+    list.innerHTML = '<div class="ann-empty">Duyuru yüklenemedi.</div>';
+  }
+}
+
+function renderAnnouncements(payload) {
+  const list = document.getElementById('ann-list');
+  const anns = payload?.announcements || [];
+  if (!anns.length) {
+    list.innerHTML = '<div class="ann-empty">Henüz duyuru yok.</div>';
     return;
   }
-
-  container.innerHTML = list.map(item => `
-    <article class="card">
-      <div class="card-header">
-        <div class="card-title">${escapeHTML(item.title || "nothing to see here")}</div>
-        <div class="card-date">${item.date ? new Date(item.date).toLocaleDateString('tr-TR') : 'Güncel'}</div>
-      </div>
-      <div class="card-body">${escapeHTML(item.content || "nothing to see here")}</div>
-    </article>
-  `).join('');
+  list.innerHTML = '';
+  [...anns]
+    .sort((a, b) => {
+      if (a.pinned && !b.pinned) return -1;
+      if (!a.pinned && b.pinned) return  1;
+      return new Date(b.date) - new Date(a.date);
+    })
+    .forEach(a => {
+      const card = document.createElement('div');
+      card.className = 'ann-card';
+      const dateStr = a.date ? new Date(a.date).toLocaleString('tr-TR') : '';
+      const pin = a.pinned ? '<span class="ann-pin-badge">📌 sabit</span>' : '';
+      card.innerHTML = `
+        <div class="ann-card-head">
+          <div class="ann-card-title">${esc(a.title || '—')}${pin}</div>
+          <div class="ann-card-date">${esc(dateStr)}</div>
+        </div>
+        <div class="ann-card-body">${esc(a.content || '')}</div>`;
+      list.appendChild(card);
+    });
 }
 
-function escapeHTML(str) {
-  if (typeof str !== 'string') return '';
-  return str.replace(/[&<>'"]/g, tag => ({
-    '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;'
-  }[tag] || tag));
-}
-
-// Oturum Durumu Kontrolü
-document.addEventListener('DOMContentLoaded', async () => {
-  if (sessionStorage.getItem('authenticated') === 'true') {
-    const payload = await fetchGistPayload();
-    renderDashboard(payload.announcements || payload);
+// ── Contacts (localStorage, same origin as contact form) ──
+function renderContacts() {
+  const entries = getContacts();
+  const el = document.getElementById('contactsList');
+  if (!entries.length) {
+    el.innerHTML = '<div class="contacts-empty">no submissions yet</div>';
+    return;
   }
-});
-</script>
+  el.innerHTML = '';
+  entries.forEach((e, i) => {
+    const card = document.createElement('div');
+    card.className = 'contact-card';
+    card.innerHTML = `
+      <div class="contact-header">
+        <div>
+          <div class="contact-name">${esc(e.name)}</div>
+          <div class="contact-email">${esc(e.email)}</div>
+        </div>
+        <div style="text-align:right">
+          <div class="contact-date">${new Date(e.date).toLocaleString()}</div>
+          <button class="delete-btn" data-idx="${i}">✕ delete</button>
+        </div>
+      </div>
+      <span class="contact-subject">${esc(e.subject)}</span>
+      <div class="contact-msg">${esc(e.message)}</div>`;
+    el.appendChild(card);
+  });
+}
 
+document.addEventListener('click', e => {
+  const btn = e.target.closest('[data-idx]');
+  if (!btn) return;
+  const i = parseInt(btn.dataset.idx, 10);
+  if (!isNaN(i)) deleteContact(i);
+});
+
+function deleteContact(i) {
+  const entries = getContacts();
+  entries.splice(i, 1);
+  localStorage.setItem('contact_entries', JSON.stringify(entries));
+  renderContacts();
+}
+
+function getContacts() {
+  try { return JSON.parse(localStorage.getItem('contact_entries')) || []; }
+  catch { return []; }
+}
+
+// ── Utils ──
+function esc(str) {
+  return String(str)
+    .replace(/&/g,'&amp;').replace(/</g,'&lt;')
+    .replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+</script>
 </body>
 </html>
