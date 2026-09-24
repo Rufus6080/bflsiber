@@ -122,8 +122,9 @@ h2{font-size:1.5rem;font-weight:300;letter-spacing:-0.02em;margin-bottom:2rem}
   </main>
 </div>
 
-<script src="shared.js"></script>
 <script>
+console.log('[admin] script loaded');
+
 // ── Gist ID — must match what the private admin panel pushes to ──
 const GIST_ID = 'e75637adcf06c0fa04a244bca28e741e';
 const SESSION_KEY = 'admin_session';
@@ -172,26 +173,35 @@ async function sha256(str) {
 }
 
 async function doLogin() {
+  console.log('[admin] doLogin called');
   const btn = document.getElementById('loginBtn');
   const p   = document.getElementById('upass').value;
-  if (!p) return;
+  const errEl = document.getElementById('loginError');
+
+  if (!p) { errEl.textContent = 'Şifre boş.'; errEl.style.display = 'block'; return; }
 
   btn.disabled = true;
   btn.textContent = '…';
+  errEl.style.display = 'none';
 
   try {
+    console.log('[admin] fetching gist...');
     const { payload } = await fetchGistPayload();
-    const inputHash   = await sha256(p);
+    console.log('[admin] gist ok, passwordHash:', payload.passwordHash ? 'present' : 'MISSING');
+    const inputHash = await sha256(p);
+    console.log('[admin] inputHash:', inputHash);
     if (inputHash === payload.passwordHash) {
       sessionStorage.setItem(SESSION_KEY, '1');
       showDashboard();
     } else {
-      document.getElementById('loginError').style.display = 'block';
-      setTimeout(() => document.getElementById('loginError').style.display = 'none', 3000);
+      errEl.textContent = 'Yanlış Şifre';
+      errEl.style.display = 'block';
+      setTimeout(() => errEl.style.display = 'none', 3000);
     }
   } catch (err) {
-    document.getElementById('loginError').textContent = 'Bağlantı hatası: ' + err.message;
-    document.getElementById('loginError').style.display = 'block';
+    console.error('[admin] login error:', err);
+    errEl.textContent = 'Hata: ' + err.message;
+    errEl.style.display = 'block';
   } finally {
     btn.disabled = false;
     btn.textContent = 'Login →';
