@@ -1,209 +1,313 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="tr">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Admin Girişi</title>
-<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
-<style>
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-:root{--bg:#000000;--surface:#00ff00;--border:#00ff00;--accent:#FFFFFF;--danger:#FF0000;--text:#FFFFFF;--muted:#FFFFFF;--mono:'Space Mono',monospace;--sans:'Inter',sans-serif}
-body{background:var(--bg);color:var(--text);font-family:var(--sans);min-height:100vh}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BFL Siber — Erişim Sağlandı</title>
+    <style>
+        :root {
+            --bg-color: #0d1117;
+            --card-bg: #161b22;
+            --border-color: #30363d;
+            --text-color: #c9d1d9;
+            --accent-green: #2ea043;
+            --accent-cyan: #38bdf8;
+            --text-muted: #8b949e;
+        }
 
-/* login */
-#loginScreen{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:2rem}
-.login-box{width:100%;max-width:380px}
-.login-tag{font-family:var(--mono);font-size:0.7rem;color:var(--accent);letter-spacing:0.2em;margin-bottom:1.5rem}
-.login-box h1{font-size:1.75rem;font-weight:300;letter-spacing:-0.02em;margin-bottom:2rem}
-.field{margin-bottom:1.25rem}
-label{display:block;font-family:var(--mono);font-size:0.7rem;color:var(--muted);letter-spacing:0.1em;margin-bottom:0.4rem}
-input{width:100%;background:var(--surface);border:1px solid var(--border);color:var(--text);font-family:var(--mono);font-size:0.9rem;padding:0.7rem 1rem;border-radius:4px;outline:none;transition:border-color 0.2s}
-input:focus{border-color:var(--accent)}
-.btn{width:100%;background:var(--accent);color:#000;font-family:var(--mono);font-size:0.85rem;font-weight:700;padding:0.8rem;border:none;border-radius:4px;cursor:pointer;transition:opacity 0.2s;margin-top:0.5rem}
-.btn:hover{opacity:0.85}
-.btn-ghost{background:transparent;color:var(--muted);border:1px solid var(--border)}
-.btn-ghost:hover{color:var(--text);border-color:var(--text);opacity:1}
-.btn-danger{background:var(--danger);color:#fff}
-.error{color:var(--danger);font-family:var(--mono);font-size:0.75rem;margin-top:1rem;display:none}
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
 
-/* dashboard */
-#dashboard{display:none}
-nav{display:flex;align-items:center;justify-content:space-between;padding:1rem 2rem;border-bottom:1px solid var(--border)}
-.logo{font-family:var(--mono);font-size:0.9rem;color:var(--accent)}
-.logo span{color:var(--muted)}
-.nav-right{display:flex;gap:1rem;align-items:center}
-.nav-tab{font-family:var(--mono);font-size:0.75rem;color:var(--muted);cursor:pointer;padding:0.4rem 0.75rem;border-radius:4px;border:1px solid transparent;transition:all 0.15s}
-.nav-tab:hover,.nav-tab.active{color:var(--accent);border-color:var(--accent)}
-.nav-logout{font-family:var(--mono);font-size:0.75rem;color:var(--danger);cursor:pointer;padding:0.4rem 0.75rem;border:1px solid transparent;border-radius:4px}
-.nav-logout:hover{border-color:var(--danger)}
-.nav-back{font-family:var(--mono);font-size:0.75rem;color:var(--muted);text-decoration:none;padding:0.4rem 0.75rem;border:1px solid transparent;border-radius:4px;transition:all 0.15s;display:inline-flex;align-items:center;gap:0.3rem}
-.nav-back:hover{color:var(--text);border-color:var(--border)}
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            padding: 2rem 1rem;
+            min-height: 100vh;
+        }
 
-main{padding:2.5rem 2rem;max-width:900px;margin:0 auto}
-.page{display:none}
-.page.active{display:block}
-.page-title{font-family:var(--mono);font-size:0.7rem;color:var(--accent);letter-spacing:0.2em;margin-bottom:0.75rem}
-h2{font-size:1.5rem;font-weight:300;letter-spacing:-0.02em;margin-bottom:2rem}
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
 
-/* contacts table */
-.contacts-empty{font-family:var(--mono);font-size:0.85rem;color:var(--muted);padding:3rem;text-align:center;border:1px solid var(--border);border-radius:4px}
-.contact-card{background:var(--surface);border:1px solid var(--border);border-radius:4px;padding:1.25rem 1.5rem;margin-bottom:1px;transition:border-color 0.15s}
-.contact-card:hover{border-color:#2a3a4a}
-.contact-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:0.5rem}
-.contact-name{font-weight:500;font-size:0.95rem}
-.contact-date{font-family:var(--mono);font-size:0.7rem;color:var(--muted)}
-.contact-email{font-family:var(--mono);font-size:0.75rem;color:var(--accent);margin-bottom:0.5rem}
-.contact-subject{display:inline-block;font-family:var(--mono);font-size:0.7rem;background:rgba(0,102,255,0.1);color:#6699ff;padding:2px 8px;border-radius:3px;margin-bottom:0.75rem}
-.contact-msg{font-size:0.85rem;color:var(--muted);line-height:1.6}
-.delete-btn{font-family:var(--mono);font-size:0.7rem;color:var(--muted);background:none;border:none;cursor:pointer;padding:2px 6px}
-.delete-btn:hover{color:var(--danger)}
+        header {
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 1.5rem;
+            margin-bottom: 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
 
-/* change password */
-.pw-box{max-width:400px}
-.msg{font-family:var(--mono);font-size:0.8rem;margin-top:1rem;display:none}
-.msg.success{color:var(--accent)}
-.msg.error-msg{color:var(--danger)}
-</style>
+        .badge {
+            background-color: rgba(46, 160, 67, 0.15);
+            color: #3fb950;
+            border: 1px solid rgba(46, 160, 67, 0.4);
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        h1 {
+            font-size: 1.75rem;
+            color: #ffffff;
+        }
+
+        .status-bar {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            padding: 1rem;
+            border-radius: 6px;
+            margin-bottom: 2rem;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .status-indicator {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background-color: #3fb950;
+            box-shadow: 0 0 8px #3fb950;
+        }
+
+        .announcements-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 1.25rem;
+        }
+
+        .announcement-card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 1.5rem;
+            transition: border-color 0.2s ease;
+        }
+
+        .announcement-card:hover {
+            border-color: #58a6ff;
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            margin-bottom: 0.75rem;
+            gap: 1rem;
+        }
+
+        .card-title {
+            font-size: 1.2rem;
+            color: #ffffff;
+            font-weight: 600;
+        }
+
+        .card-date {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            white-space: nowrap;
+        }
+
+        .card-body {
+            line-height: 1.6;
+            color: #8b949e;
+            white-space: pre-wrap;
+        }
+
+        .loading, .error {
+            text-align: center;
+            padding: 3rem;
+            color: var(--text-muted);
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+        }
+
+        .error {
+            color: #f85149;
+            border-color: rgba(248, 81, 73, 0.4);
+        }
+
+        footer {
+            margin-top: 3rem;
+            text-align: center;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            border-top: 1px solid var(--border-color);
+            padding-top: 1.5rem;
+        }
+    </style>
 </head>
 <body>
 
-
-<!-- LOGIN -->
-<div id="loginScreen">
-  <div class="login-box">
-    <div class="login-tag">// Admin Girişi</div>
-    <h1>Giriş yap</h1>
-    <div class="field"><label>username</label><input type="text" id="uname" autocomplete="username"></div>
-    <div class="field"><label>password</label><input type="password" id="upass" autocomplete="current-password"></div>
-    <button class="btn" onclick="doLogin()">Login →</button>
-    <div class="error" id="loginError">Yanlış Şifre</div>
-    <a href="https://bflsiber.pages.dev" style="display:block;margin-top:1rem;font-family:var(--mono);font-size:0.75rem;color:var(--danger);text-decoration:none;text-align:center;transition:opacity 0.2s" onmouseover="this.style.opacity='0.7'" onmouseout="this.style.opacity='1'">← geri</a>
-  </div>
-</div>
-
-<!-- DASHBOARD -->
-<div id="dashboard">
-  <nav>
-    <div class="logo"><span>BFL</span>Siber <span style="color:var(--muted);font-size:0.75rem">/ admin</span></div>
-    <div class="nav-right">
-      <span class="nav-tab" onclick="showPage('files',this)">files</span>
-      <span class="nav-tab active" onclick="showPage('contacts',this)">contacts</span>
-      <span class="nav-tab" onclick="showPage('files',this)">BFLS Dropbox</span>
-      <span class="nav-tab" onclick="showPage('changepw',this)">change password</span>
-      <a class="nav-back" href="https://bflsiber.pages.dev">← geri</a>
-      <span class="nav-logout" onclick="logout()">logout</span>
-    </div>
-  </nav>
-  <main>
-
-    <!-- contacts page -->
-    <div id="page-contacts" class="page active">
-      <div class="page-title">// Submissions</div>
-      <h2>Inbox</h2>
-      <div id="contactsList"></div>
-    </div>
-
-    <!-- change password page -->
-    <div id="page-changepw" class="page">
-      <div class="page-title">// security</div>
-      <h2>Şifreyi Değiştir</h2>
-      <div class="pw-box">
-        <div class="field"><label>new password</label><input type="password" id="newpw" placeholder="enter new password"></div>
-        <div class="field"><label>confirm password</label><input type="password" id="confirmpw" placeholder="confirm new password"></div>
-        <button class="btn" onclick="doChangePw()">update password →</button>
-        <div class="msg success" id="pwSuccess">password updated successfully</div>
-        <div class="msg error-msg" id="pwError"></div>
-      </div>
-    </div>
-
-  </main>
-</div>
-
-<script src="shared.js"></script>
-<script>
-window.addEventListener('load', () => {
-  if (isLoggedIn()) showDashboard();
-});
-
-document.getElementById('upass').addEventListener('keydown', e => { if(e.key==='Enter') doLogin(); });
-
-async function doLogin() {
-  const u = document.getElementById('uname').value;
-  const p = document.getElementById('upass').value;
-  const ok = await checkLogin(u, p);
-  if (ok) { setSession(); showDashboard(); }
-  else { document.getElementById('loginError').style.display = 'block'; }
-}
-
-function showDashboard() {
-  document.getElementById('loginScreen').style.display = 'none';
-  document.getElementById('dashboard').style.display = 'block';
-  renderContacts();
-}
-
-function showPage(name, el) {
-  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-  document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
-  document.getElementById('page-' + name).classList.add('active');
-  el.classList.add('active');
-  if (name === 'contacts') renderContacts();
-}
-
-function renderContacts() {
-  const entries = getContacts();
-  const el = document.getElementById('contactsList');
-  if (!entries.length) {
-    el.innerHTML = '<div class="contacts-empty">no submissions yet</div>';
-    return;
-  }
-  el.innerHTML = entries.map((e, i) => `
-    <div class="contact-card">
-      <div class="contact-header">
+<div class="container">
+    <header>
         <div>
-          <div class="contact-name">${esc(e.name)}</div>
-          <div class="contact-email">${esc(e.email)}</div>
+            <h1>BFL Siber Paneli</h1>
+            <p style="color: var(--text-muted); font-size: 0.9rem; margin-top: 0.25rem;">
+                Üyelere Özel İç Duyuru Portalı
+            </p>
         </div>
-        <div style="text-align:right">
-          <div class="contact-date">${new Date(e.date).toLocaleString()}</div>
-          <button class="delete-btn" onclick="deleteContact(${i})">✕ delete</button>
-        </div>
-      </div>
-      <span class="contact-subject">${esc(e.subject)}</span>
-      <div class="contact-msg">${esc(e.message)}</div>
+        <span class="badge">Testi Geçtin</span>
+    </header>
+
+    <div class="status-bar">
+        <div class="status-indicator"></div>
+        <span>Kimlik doğrulama seviyesi: <strong>Seviye 1 (Atlatıldı)</strong> — Ekibe hoş geldin.</span>
     </div>
-  `).join('');
-}
 
-function deleteContact(i) {
-  const entries = getContacts();
-  entries.splice(i, 1);
-  localStorage.setItem('contact_entries', JSON.stringify(entries));
-  renderContacts();
-}
+    <section id="announcements-container" class="announcements-grid">
+        <div class="loading">Gizli duyurular çekiliyor...</div>
+    </section>
 
-async function doChangePw() {
-  const np = document.getElementById('newpw').value;
-  const cp = document.getElementById('confirmpw').value;
-  document.getElementById('pwSuccess').style.display = 'none';
-  document.getElementById('pwError').style.display = 'none';
-  if (!np) { showPwErr('password cannot be empty'); return; }
-  if (np !== cp) { showPwErr('passwords do not match'); return; }
-  if (np.length < 8) { showPwErr('minimum 8 characters'); return; }
-  await changePassword(np);
-  document.getElementById('newpw').value = '';
-  document.getElementById('confirmpw').value = '';
-  document.getElementById('pwSuccess').style.display = 'block';
-}
+    <footer>
+        <p>&copy; BFL Siber Güvenlik Grubu — Sadece Yetkili Erişim</p>
+    </footer>
+</div>
 
-function showPwErr(msg) {
-  const el = document.getElementById('pwError');
-  el.textContent = msg;
-  el.style.display = 'block';
-}
+<script>
+    /**
+     * KONFİGÜRASYON
+     */
+    const CONFIG = {
+        // Admin sunucu adresi (kullanılmıyorsa boş bırakılabilir)
+        ADMIN_API_URL: '',
+        
+        // GitHub Gist Kimliği
+        GIST_ID: 'e75637adcf06c0fa04a244bca28e741e',
+        
+        // Veri çekilemezse gösterilecek yedek metin
+        DEMO_ANNOUNCEMENTS: [
+            {
+                id: "1",
+                title: "nothing to see here",
+                date: new Date().toISOString(),
+                content: "nothing to see here"
+            }
+        ]
+    };
 
-function esc(str) {
-  return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
-}
+    /**
+     * Duyuruları Çekme Motoru
+     */
+    async function fetchAnnouncements() {
+        const container = document.getElementById('announcements-container');
+
+        try {
+            let items = null;
+
+            // 1. Gist ID tanımlıysa GitHub Gist API'den veriyi çek
+            if (CONFIG.GIST_ID) {
+                const gistRes = await fetch(`https://api.github.com/gists/${CONFIG.GIST_ID}`);
+                if (gistRes.ok) {
+                    const gistData = await gistRes.json();
+                    const firstFileKey = Object.keys(gistData.files)[0];
+                    const rawContent = gistData.files[firstFileKey].content;
+                    
+                    try {
+                        items = JSON.parse(rawContent);
+                    } catch (e) {
+                        // Eğer Gist düz metin ise obje formatına çevir
+                        items = [{
+                            title: "Duyuru",
+                            content: rawContent,
+                            date: gistData.updated_at
+                        }];
+                    }
+                }
+            }
+
+            // 2. Gist yoksa veya başarısız olduysa API'yi dene
+            if (!items && CONFIG.ADMIN_API_URL) {
+                try {
+                    const apiRes = await fetch(CONFIG.ADMIN_API_URL, {
+                        method: 'GET',
+                        headers: { 'Accept': 'application/json' }
+                    });
+                    if (apiRes.ok) {
+                        const json = await apiRes.json();
+                        items = json.data || json;
+                    }
+                } catch (e) {
+                    console.warn("API sunucusuna ulaşılamadı, yedek veriye geçiliyor.");
+                }
+            }
+
+            // 3. Veri bulunamazsa varsayılan yedek veriyi göster
+            if (!items || (Array.isArray(items) && items.length === 0)) {
+                items = CONFIG.DEMO_ANNOUNCEMENTS;
+            }
+
+            renderAnnouncements(items);
+
+        } catch (err) {
+            console.error("Duyurular yüklenirken hata oluştu:", err);
+            renderAnnouncements(CONFIG.DEMO_ANNOUNCEMENTS);
+        }
+    }
+
+    /**
+     * XSS Korumalı HTML İşleme
+     */
+    function renderAnnouncements(items) {
+        const container = document.getElementById('announcements-container');
+        const list = Array.isArray(items) ? items : [items];
+
+        if (!list || list.length === 0) {
+            container.innerHTML = '<div class="loading">Henüz yayınlanmış bir duyuru yok.</div>';
+            return;
+        }
+
+        container.innerHTML = list.map(item => {
+            const title = escapeHTML(item.title || item.name || "nothing to see here");
+            const content = escapeHTML(item.content || item.description || "nothing to see here");
+            const dateStr = item.date || item.createdAt 
+                ? new Date(item.date || item.createdAt).toLocaleDateString('tr-TR') 
+                : "Güncel";
+
+            return `
+                <article class="announcement-card">
+                    <div class="card-header">
+                        <h2 class="card-title">${title}</h2>
+                        <span class="card-date">${dateStr}</span>
+                    </div>
+                    <div class="card-body">${content}</div>
+                </article>
+            `;
+        }).join('');
+    }
+
+    /**
+     * XSS Önleme Fonksiyonu
+     */
+    function escapeHTML(str) {
+        if (typeof str !== 'string') return '';
+        return str.replace(/[&<>'"]/g, 
+            tag => ({
+                '&': '&amp;',
+                '<': '&lt;',
+                '>': '&gt;',
+                "'": '&#39;',
+                '"': '&quot;'
+            }[tag] || tag)
+        );
+    }
+
+    // Sayfa yüklendiğinde çalıştır
+    document.addEventListener('DOMContentLoaded', fetchAnnouncements);
 </script>
+
 </body>
 </html>
