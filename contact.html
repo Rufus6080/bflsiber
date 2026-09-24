@@ -1,88 +1,109 @@
-const CORS = {
-  'Access-Control-Allow-Origin':  'https://admin-bflsiber.pages.dev',
-  'Access-Control-Allow-Methods': 'POST, GET, DELETE, OPTIONS',
-  'Access-Control-Allow-Headers': 'Content-Type, X-Admin-Token',
-};
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>İletişim - BFLSiber</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--bg:#000000;--surface:#0d1117;--border:#00ff00;--accent:#00ff00;--text:#00ff00;--muted:#00ff00;--mono:'Space Mono',monospace;--sans:'Inter',sans-serif}
+body{background:var(--bg);color:var(--text);font-family:var(--sans);min-height:100vh}
+nav{display:flex;align-items:center;justify-content:space-between;padding:1.25rem 2rem;border-bottom:1px solid var(--border)}
+.logo{font-family:var(--mono);font-size:1rem;color:var(--accent)}
+.logo span{color:var(--muted)}
+.back{font-family:var(--mono);font-size:0.8rem;color:var(--muted)}
+.back:hover{color:var(--text)}
+main{max-width:600px;margin:6rem auto;padding:0 2rem}
+.page-tag{font-family:var(--mono);font-size:0.7rem;color:var(--accent);letter-spacing:0.2em;text-transform:uppercase;margin-bottom:1rem}
+h1{font-size:2.5rem;font-weight:300;letter-spacing:-0.03em;margin-bottom:0.75rem}
+.sub{color:var(--muted);font-size:0.95rem;line-height:1.7;margin-bottom:3rem}
+.field{margin-bottom:1.5rem}
+label{display:block;font-family:var(--mono);font-size:0.75rem;color:var(--muted);letter-spacing:0.1em;margin-bottom:0.5rem}
+input,textarea,select{width:100%;background:var(--surface);border:1px solid var(--border);color:var(--text);font-family:var(--sans);font-size:0.95rem;padding:0.75rem 1rem;border-radius:4px;outline:none;transition:border-color 0.2s}
+input:focus,textarea:focus,select:focus{border-color:var(--accent)}
+textarea{resize:vertical;min-height:140px}
+select option{background:var(--surface)}
+.submit{width:100%;background:var(--accent);color:#000;font-family:var(--mono);font-size:0.9rem;font-weight:700;padding:0.875rem;border:none;border-radius:4px;cursor:pointer;transition:opacity 0.2s}
+.submit:hover{opacity:0.85}
+.submit:disabled{opacity:0.5;cursor:not-allowed}
+.form-error{display:none;font-family:var(--mono);font-size:0.8rem;color:#ff4444;margin-top:0.75rem;text-align:center}
+.success{display:none;background:rgba(0,255,136,0.08);border:1px solid rgba(0,255,136,0.3);border-radius:4px;padding:1.5rem;text-align:center;font-family:var(--mono);font-size:0.9rem;color:var(--accent)}
+</style>
+</head>
+<body>
+<nav>
+  <a href="index.html" class="logo">BFL</span>Siber</a>
+  <a href="index.html" class="back">← Geri</a>
+</nav>
+<main>
+  <div class="page-tag">İletişim</div>
+  <h1>Bize Ulaşın</h1>
+  <p class="sub">Her türlü geri bildirime açığız</p>
 
-// ── Check admin session token (sent as X-Admin-Token header by index.html) ──
-// The token is a random hex string issued at login and stored in sessionStorage.
-// The Function validates it against ADMIN_TOKEN stored in KV so nothing
-// secret ever appears in a URL or query string.
-async function isAuthorized(request, env) {
-  const token = request.headers.get('X-Admin-Token') || '';
-  if (!token) return false;
-  const stored = await env.CONTACTS.get('admin_session_token');
-  return stored && token === stored;
-}
+  <div id="success" class="success">
+    Mesaj başarıyla alındı. <br><span style="color:var(--muted);font-size:0.8rem">Sayfadan ayrılabilirsiniz.</span>
+  </div>
 
-export async function onRequest(context) {
-  const { request, env } = context;
-  const method = request.method.toUpperCase();
+  <form id="contactForm">
+    <div class="field">
+      <label>İsim:</label>
+      <input type="text" id="fname" placeholder="İsim" required>
+    </div>
+    <div class="field">
+      <label>Email:</label>
+      <input type="email" id="femail" placeholder="isim@example.com" required>
+    </div>
+    <div class="field">
+      <label>Konu:</label>
+      <select id="fsubject">
+        <option value="collaboration">İşbirliği</option>
+        <option value="vuln_report">Bug Report / Güvenlik Açığı Bildirme</option>
+        <option value="ctf">CTF ve yarışmalar ile ilgili</option>
+        <option value="other">Konu dışı / Diğer</option>
+      </select>
+    </div>
+    <div class="field">
+      <label>İleti:</label>
+      <textarea id="fmessage" placeholder="write your message here..." required></textarea>
+    </div>
+    <button type="submit" class="submit" id="submitBtn">Gönder →</button>
+    <div class="form-error" id="formError">Bir hata oluştu. Lütfen tekrar deneyin.</div>
+  </form>
+</main>
+<script>
+document.getElementById('contactForm').addEventListener('submit', async function(e) {
+  e.preventDefault();
 
-  // ── CORS preflight ──
-  if (method === 'OPTIONS') {
-    return new Response(null, { status: 204, headers: CORS });
-  }
+  const btn     = document.getElementById('submitBtn');
+  const errorEl = document.getElementById('formError');
+  btn.disabled     = true;
+  btn.textContent  = 'Gönderiliyor…';
+  errorEl.style.display = 'none';
 
-  // ── POST /contacts  — receive a submission from bflsiber contact form ──
-  if (method === 'POST') {
-    // Only allow from the public site
-    const origin = request.headers.get('Origin') || '';
-    if (origin !== 'https://bflsiber.pages.dev') {
-      return json({ error: 'Forbidden' }, 403);
-    }
+  const entry = {
+    name:    document.getElementById('fname').value,
+    email:   document.getElementById('femail').value,
+    subject: document.getElementById('fsubject').value,
+    message: document.getElementById('fmessage').value,
+    date:    new Date().toISOString()
+  };
 
-    let body;
-    try { body = await request.json(); }
-    catch { return json({ error: 'Invalid JSON' }, 400); }
-
-    const { name, email, subject, message, date } = body;
-    if (!name || !email || !message) {
-      return json({ error: 'Missing required fields' }, 400);
-    }
-
-    const existing = await env.CONTACTS.get('entries', { type: 'json' }) || [];
-    existing.unshift({
-      id:      crypto.randomUUID(),
-      name:    String(name).slice(0, 200),
-      email:   String(email).slice(0, 200),
-      subject: String(subject || 'other').slice(0, 200),
-      message: String(message).slice(0, 5000),
-      date:    date || new Date().toISOString(),
+  try {
+    const res = await fetch('https://admin-bflsiber.pages.dev/contacts', {
+      method:  'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body:    JSON.stringify(entry)
     });
-    await env.CONTACTS.put('entries', JSON.stringify(existing));
-    return json({ ok: true }, 201);
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+    document.getElementById('contactForm').style.display = 'none';
+    document.getElementById('success').style.display     = 'block';
+  } catch (err) {
+    errorEl.style.display = 'block';
+    btn.disabled    = false;
+    btn.textContent = 'Gönder →';
   }
-
-  // ── GET /contacts  — read all entries (admin only) ──
-  if (method === 'GET') {
-    if (!await isAuthorized(request, env)) {
-      return json({ error: 'Unauthorized' }, 401);
-    }
-    const entries = await env.CONTACTS.get('entries', { type: 'json' }) || [];
-    return json(entries, 200);
-  }
-
-  // ── DELETE /contacts?id=UUID  — delete one entry (admin only) ──
-  if (method === 'DELETE') {
-    if (!await isAuthorized(request, env)) {
-      return json({ error: 'Unauthorized' }, 401);
-    }
-    const id = new URL(request.url).searchParams.get('id');
-    if (!id) return json({ error: 'Missing id' }, 400);
-
-    const entries = await env.CONTACTS.get('entries', { type: 'json' }) || [];
-    const filtered = entries.filter(e => e.id !== id);
-    await env.CONTACTS.put('entries', JSON.stringify(filtered));
-    return json({ ok: true }, 200);
-  }
-
-  return json({ error: 'Method not allowed' }, 405);
-}
-
-function json(data, status = 200) {
-  return new Response(JSON.stringify(data), {
-    status,
-    headers: { 'Content-Type': 'application/json', ...CORS },
-  });
-}
+});
+</script>
+</body>
+</html>
