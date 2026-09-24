@@ -57,18 +57,6 @@ h2{font-size:1.5rem;font-weight:300;letter-spacing:-0.02em;margin-bottom:2rem}
 .ann-meta{font-family:var(--mono);font-size:0.7rem;color:#555;margin-bottom:1.5rem;display:flex;align-items:center;gap:1rem;flex-wrap:wrap}
 .ann-refresh-btn{font-family:var(--mono);font-size:0.65rem;color:#555;background:none;border:1px solid #222;padding:0.2rem 0.5rem;border-radius:3px;cursor:pointer;transition:all 0.15s}
 .ann-refresh-btn:hover{color:#00ff00;border-color:#00ff00}
-/* contacts table */
-.contacts-empty{font-family:var(--mono);font-size:0.85rem;color:var(--muted);padding:3rem;text-align:center;border:1px solid var(--border);border-radius:4px}
-.contact-card{background:#0a0a0a;border:1px solid #1a1a1a;border-radius:4px;padding:1.25rem 1.5rem;margin-bottom:1px;transition:border-color 0.15s}
-.contact-card:hover{border-color:#2a3a4a}
-.contact-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:0.5rem}
-.contact-name{font-weight:500;font-size:0.95rem}
-.contact-date{font-family:var(--mono);font-size:0.7rem;color:#555}
-.contact-email{font-family:var(--mono);font-size:0.75rem;color:#00ff00;margin-bottom:0.5rem}
-.contact-subject{display:inline-block;font-family:var(--mono);font-size:0.7rem;background:rgba(0,102,255,0.1);color:#6699ff;padding:2px 8px;border-radius:3px;margin-bottom:0.75rem}
-.contact-msg{font-size:0.85rem;color:#aaa;line-height:1.6}
-.delete-btn{font-family:var(--mono);font-size:0.7rem;color:#555;background:none;border:none;cursor:pointer;padding:2px 6px}
-.delete-btn:hover{color:var(--danger)}
 
 </style>
 </head>
@@ -92,7 +80,6 @@ h2{font-size:1.5rem;font-weight:300;letter-spacing:-0.02em;margin-bottom:2rem}
     <div class="logo"><span style="color:#00ff00">BFL</span>Siber <span style="color:#555;font-size:0.75rem">/ admin</span></div>
     <div class="nav-right">
       <span class="nav-tab active" onclick="showPage('announcements',this)">📣 duyurular</span>
-      <span class="nav-tab" onclick="showPage('contacts',this)">contacts</span>
       <a class="nav-back" href="https://bflsiber.pages.dev">← geri</a>
       <span class="nav-logout" onclick="doLogout()">logout</span>
     </div>
@@ -110,13 +97,6 @@ h2{font-size:1.5rem;font-weight:300;letter-spacing:-0.02em;margin-bottom:2rem}
       </div>
       <div id="ann-error" class="ann-error" style="display:none"></div>
       <div id="ann-list"><div class="ann-loading">Duyurular yükleniyor…</div></div>
-    </div>
-
-    <!-- CONTACTS PAGE -->
-    <div id="page-contacts" class="page">
-      <div class="page-title">// Submissions</div>
-      <h2>Inbox</h2>
-      <div id="contactsList"></div>
     </div>
 
   </main>
@@ -226,7 +206,6 @@ function showPage(name, el) {
   document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
   document.getElementById('page-' + name).classList.add('active');
   el.classList.add('active');
-  if (name === 'contacts')      renderContacts();
   if (name === 'announcements') loadAnnouncements();
 }
 
@@ -278,54 +257,6 @@ function renderAnnouncements(payload) {
         <div class="ann-card-body">${esc(a.content || '')}</div>`;
       list.appendChild(card);
     });
-}
-
-// ── Contacts (localStorage, same origin as contact form) ──
-function renderContacts() {
-  const entries = getContacts();
-  const el = document.getElementById('contactsList');
-  if (!entries.length) {
-    el.innerHTML = '<div class="contacts-empty">no submissions yet</div>';
-    return;
-  }
-  el.innerHTML = '';
-  entries.forEach((e, i) => {
-    const card = document.createElement('div');
-    card.className = 'contact-card';
-    card.innerHTML = `
-      <div class="contact-header">
-        <div>
-          <div class="contact-name">${esc(e.name)}</div>
-          <div class="contact-email">${esc(e.email)}</div>
-        </div>
-        <div style="text-align:right">
-          <div class="contact-date">${new Date(e.date).toLocaleString()}</div>
-          <button class="delete-btn" data-idx="${i}">✕ delete</button>
-        </div>
-      </div>
-      <span class="contact-subject">${esc(e.subject)}</span>
-      <div class="contact-msg">${esc(e.message)}</div>`;
-    el.appendChild(card);
-  });
-}
-
-document.addEventListener('click', e => {
-  const btn = e.target.closest('[data-idx]');
-  if (!btn) return;
-  const i = parseInt(btn.dataset.idx, 10);
-  if (!isNaN(i)) deleteContact(i);
-});
-
-function deleteContact(i) {
-  const entries = getContacts();
-  entries.splice(i, 1);
-  localStorage.setItem('contact_entries', JSON.stringify(entries));
-  renderContacts();
-}
-
-function getContacts() {
-  try { return JSON.parse(localStorage.getItem('contact_entries')) || []; }
-  catch { return []; }
 }
 
 // ── Utils ──
