@@ -1,474 +1,223 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BFL Siber — Gizli Admin Paneli</title>
-    <style>
-        :root {
-            --bg-color: #050505;
-            --card-bg: #0a0e0a;
-            --border-color: #00ff66;
-            --text-color: #00ff66;
-            --text-muted: #00b347;
-            --error-color: #ff3333;
-            --glow: 0 0 10px rgba(0, 255, 102, 0.4);
-            --glow-strong: 0 0 20px rgba(0, 255, 102, 0.8);
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin - BFLSiber</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#000000;
+  --surface:#0d1117;
+  --border:#00ff00;
+  --accent:#00ff00;
+  --text:#00ff00;
+  --muted:#00ff00;
+  --mono:'Space Mono',monospace;
+  --sans:'Inter',sans-serif;
+  --error:#ff3333;
+}
+body{background:var(--bg);color:var(--text);font-family:var(--sans);min-height:100vh}
+nav{display:flex;align-items:center;justify-content:space-between;padding:1.25rem 2rem;border-bottom:1px solid var(--border)}
+.logo{font-family:var(--mono);font-size:1rem;color:var(--accent);text-decoration:none}
+.back{font-family:var(--mono);font-size:0.8rem;color:var(--muted);text-decoration:none;background:transparent;border:none;cursor:pointer}
+.back:hover{color:var(--text);opacity:0.8}
+main{max-width:600px;margin:6rem auto;padding:0 2rem}
+.page-tag{font-family:var(--mono);font-size:0.7rem;color:var(--accent);letter-spacing:0.2em;text-transform:uppercase;margin-bottom:1rem}
+h1{font-size:2.5rem;font-weight:300;letter-spacing:-0.03em;margin-bottom:0.75rem}
+.sub{color:var(--muted);font-size:0.95rem;line-height:1.7;margin-bottom:3rem}
 
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: 'Courier New', Courier, monospace;
-        }
+/* Form Elemanları */
+.field{margin-bottom:1.5rem}
+label{display:block;font-family:var(--mono);font-size:0.75rem;color:var(--muted);letter-spacing:0.1em;margin-bottom:0.5rem}
+input{width:100%;background:var(--surface);border:1px solid var(--border);color:var(--text);font-family:var(--sans);font-size:0.95rem;padding:0.75rem 1rem;border-radius:4px;outline:none;transition:border-color 0.2s}
+input:focus{border-color:var(--accent)}
+.submit{width:100%;background:var(--accent);color:#000;font-family:var(--mono);font-size:0.9rem;font-weight:700;padding:0.875rem;border:none;border-radius:4px;cursor:pointer;transition:opacity 0.2s}
+.submit:hover{opacity:0.85}
 
-        body {
-            background-color: var(--bg-color);
-            color: var(--text-color);
-            padding: 2rem 1rem;
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
+/* Hata ve Durum Kutuları */
+.error-msg{display:none;color:var(--error);font-family:var(--mono);font-size:0.8rem;margin-top:1rem;text-align:center}
 
-        .container {
-            width: 100%;
-            max-width: 850px;
-        }
+/* Dashboard Alanı */
+#dashboard-screen{display:none}
+.status-card{background:rgba(0,255,0,0.05);border:1px solid var(--border);border-radius:4px;padding:1rem 1.25rem;font-family:var(--mono);font-size:0.8rem;margin-bottom:2rem;display:flex;align-items:center;gap:0.75rem}
+.status-dot{width:8px;height:8px;border-radius:50%;background:var(--accent);box-shadow:0 0 8px var(--accent)}
 
-        /* --- Kimlik Doğrulama Ekranı --- */
-        #auth-screen {
-            background: var(--card-bg);
-            border: 2px solid var(--border-color);
-            box-shadow: var(--glow);
-            padding: 2.5rem;
-            border-radius: 4px;
-            text-align: center;
-        }
+.announcements-list{display:flex;flex-direction:column;gap:1.5rem}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:4px;padding:1.5rem}
+.card-header{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:0.75rem;border-bottom:1px dashed rgba(0,255,0,0.3);padding-bottom:0.5rem}
+.card-title{font-family:var(--mono);font-size:1.05rem;color:var(--accent);font-weight:700}
+.card-date{font-family:var(--mono);font-size:0.75rem;color:var(--muted);opacity:0.8}
+.card-body{font-size:0.95rem;line-height:1.6;white-space:pre-wrap;color:var(--text)}
 
-        .auth-header {
-            margin-bottom: 2rem;
-        }
-
-        .auth-header h1 {
-            font-size: 1.8rem;
-            text-shadow: var(--glow);
-            letter-spacing: 2px;
-            margin-bottom: 0.5rem;
-        }
-
-        .auth-header p {
-            color: var(--text-muted);
-            font-size: 0.9rem;
-        }
-
-        .login-form {
-            display: flex;
-            flex-direction: column;
-            gap: 1.25rem;
-            max-width: 400px;
-            margin: 0 auto;
-        }
-
-        .input-group {
-            display: flex;
-            flex-direction: column;
-            text-align: left;
-            gap: 0.5rem;
-        }
-
-        .input-group label {
-            font-size: 0.85rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        input[type="password"], input[type="text"] {
-            background-color: #000;
-            border: 1px solid var(--border-color);
-            color: var(--text-color);
-            padding: 0.75rem 1rem;
-            font-family: inherit;
-            font-size: 1rem;
-            outline: none;
-            border-radius: 2px;
-            box-shadow: inset 0 0 5px rgba(0, 255, 102, 0.2);
-        }
-
-        input[type="password"]:focus, input[type="text"]:focus {
-            box-shadow: var(--glow);
-            border-color: #ffffff;
-        }
-
-        button.btn-login {
-            background-color: transparent;
-            border: 2px solid var(--border-color);
-            color: var(--text-color);
-            padding: 0.75rem;
-            font-family: inherit;
-            font-size: 1rem;
-            font-weight: bold;
-            text-transform: uppercase;
-            cursor: pointer;
-            letter-spacing: 2px;
-            transition: all 0.2s ease;
-            box-shadow: var(--glow);
-            margin-top: 0.5rem;
-        }
-
-        button.btn-login:hover {
-            background-color: var(--border-color);
-            color: #000;
-            box-shadow: var(--glow-strong);
-        }
-
-        .auth-error {
-            color: var(--error-color);
-            font-size: 0.85rem;
-            margin-top: 1rem;
-            min-height: 1.2em;
-            text-shadow: 0 0 5px rgba(255, 51, 51, 0.5);
-        }
-
-        /* --- Dashboard Ekranı --- */
-        #dashboard-screen {
-            display: none;
-        }
-
-        header {
-            border-bottom: 2px solid var(--border-color);
-            padding-bottom: 1.5rem;
-            margin-bottom: 2rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 1rem;
-        }
-
-        .badge {
-            background-color: rgba(0, 255, 102, 0.1);
-            color: var(--text-color);
-            border: 1px solid var(--border-color);
-            padding: 0.35rem 0.85rem;
-            font-size: 0.8rem;
-            box-shadow: var(--glow);
-            text-transform: uppercase;
-        }
-
-        .status-bar {
-            background: var(--card-bg);
-            border: 1px solid var(--border-color);
-            padding: 1rem;
-            margin-bottom: 2rem;
-            font-size: 0.85rem;
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-        }
-
-        .status-indicator {
-            width: 10px;
-            height: 10px;
-            border-radius: 50%;
-            background-color: var(--border-color);
-            box-shadow: var(--glow-strong);
-            animation: pulse 1.5s infinite alternate;
-        }
-
-        @keyframes pulse {
-            from { opacity: 0.4; }
-            to { opacity: 1; }
-        }
-
-        .announcements-grid {
-            display: flex;
-            flex-direction: column;
-            gap: 1.25rem;
-        }
-
-        .announcement-card {
-            background-color: var(--card-bg);
-            border: 1px solid var(--border-color);
-            padding: 1.5rem;
-            box-shadow: var(--glow);
-            position: relative;
-        }
-
-        .card-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: baseline;
-            margin-bottom: 1rem;
-            border-bottom: 1px dashed var(--text-muted);
-            padding-bottom: 0.5rem;
-        }
-
-        .card-title {
-            font-size: 1.2rem;
-            color: #ffffff;
-            text-shadow: 0 0 5px #ffffff;
-        }
-
-        .card-date {
-            font-size: 0.8rem;
-            color: var(--text-muted);
-        }
-
-        .card-body {
-            line-height: 1.6;
-            color: var(--text-color);
-            white-space: pre-wrap;
-        }
-
-        .loading, .error {
-            text-align: center;
-            padding: 3rem;
-            background: var(--card-bg);
-            border: 1px solid var(--border-color);
-        }
-
-        footer {
-            margin-top: 3rem;
-            text-align: center;
-            font-size: 0.8rem;
-            color: var(--text-muted);
-            border-top: 1px solid var(--border-color);
-            padding-top: 1.5rem;
-        }
-
-        .btn-logout {
-            background: transparent;
-            border: 1px solid var(--border-color);
-            color: var(--text-color);
-            padding: 0.3rem 0.8rem;
-            cursor: pointer;
-            font-family: inherit;
-            font-size: 0.8rem;
-        }
-
-        .btn-logout:hover {
-            background: var(--border-color);
-            color: #000;
-        }
-    </style>
+.loading-state{background:var(--surface);border:1px solid var(--border);border-radius:4px;padding:2rem;text-align:center;font-family:var(--mono);font-size:0.85rem;color:var(--muted)}
+</style>
 </head>
 <body>
 
-<div class="container">
+<nav>
+  <a href="index.html" class="logo">BFLSiber</a>
+  <div id="nav-action">
+    <a href="index.html" class="back">← Geri</a>
+  </div>
+</nav>
 
-    <!-- LOGIN PANELİ -->
-    <div id="auth-screen">
-        <div class="auth-header">
-            <h1>[ BFL_SIBER AUTH ]</h1>
-            <p>Erişim sağlamak için parolanızı girin.</p>
-        </div>
-        <form class="login-form" id="login-form" onsubmit="handleLogin(event)">
-            <div class="input-group">
-                <label for="password">Giriş Parolası:</label>
-                <input type="password" id="password" required autocomplete="off" placeholder="••••••••">
-            </div>
-            <button type="submit" class="btn-login">Sisteme Giriş Yap</button>
-            <div id="auth-error" class="auth-error"></div>
-        </form>
+<main>
+  <!-- KİMLİK DOĞRULAMA (AUTH) EKRANI -->
+  <div id="auth-screen">
+    <div class="page-tag">Admin Portalı</div>
+    <h1>Erişim Yetkisi</h1>
+    <p class="sub">Yönetim paneline erişmek için parolanızı girin</p>
+
+    <form id="adminLoginForm" onsubmit="handleLogin(event)">
+      <div class="field">
+        <label>Parola:</label>
+        <input type="password" id="adminPassword" placeholder="••••••••" required autocomplete="off">
+      </div>
+      <button type="submit" class="submit">Giriş Yap →</button>
+      <div id="authError" class="error-msg">Hatalı parola! Erişim reddedildi.</div>
+    </form>
+  </div>
+
+  <!-- DASHBOARD EKRANI -->
+  <div id="dashboard-screen">
+    <div class="page-tag">Sistem Paneli</div>
+    <h1>Duyurular</h1>
+    <p class="sub">Yetkili üye paneline hoş geldiniz</p>
+
+    <div class="status-card">
+      <div class="status-dot"></div>
+      <span>Oturum Açıldı: Level 1 (Doğrulandı)</span>
     </div>
 
-    <!-- DASHBOARD PANELİ -->
-    <div id="dashboard-screen">
-        <header>
-            <div>
-                <h1>SYSTEM_DASHBOARD</h1>
-                <p style="color: var(--text-muted); font-size: 0.85rem; margin-top: 0.25rem;">
-                    BFL Siber Yetkili Komut Portalı
-                </p>
-            </div>
-            <div style="display: flex; align-items: center; gap: 1rem;">
-                <span class="badge">ERİŞİM ONAYLANDI</span>
-                <button onclick="handleLogout()" class="btn-logout">Çıkış Yap</button>
-            </div>
-        </header>
-
-        <div class="status-bar">
-            <div class="status-indicator"></div>
-            <span>Oturum Seviyesi: <strong>Root / Geçerli Parola Doğrulandı</strong></span>
-        </div>
-
-        <section id="announcements-container" class="announcements-grid">
-            <div class="loading">Sistem duyuruları yükleniyor...</div>
-        </section>
-
-        <footer>
-            <p>&copy; BFL Siber Security Group — Terminal v2.4</p>
-        </footer>
+    <div id="announcementsContainer" class="announcements-list">
+      <div class="loading-state">Duyurular çekiliyor...</div>
     </div>
-
-</div>
+  </div>
+</main>
 
 <script>
-    /**
-     * KONFİGÜRASYON VE ROTASYON SİSTEMİ
-     */
-    const CONFIG = {
-        GIST_ID: 'e75637adcf06c0fa04a244bca28e741e',
-        
-        // Gist/API bağlantısı kesilirse kullanılan varsayılan hash/veri
-        DEMO_PASSWORD_HASH: '8c6976e5b5410415bde908bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918', // Default SHA-256 (admin)
-        DEMO_ANNOUNCEMENTS: [
-            {
-                title: "nothing to see here",
-                content: "nothing to see here",
-                date: new Date().toISOString()
-            }
-        ]
-    };
-
-    let cachedGistData = null;
-
-    /**
-     * Web Crypto API kullanarak SHA-256 Hash üretici
-     */
-    async function sha256(message) {
-        const msgBuffer = new TextEncoder().encode(message);
-        const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
-        const hashArray = Array.from(new Uint8Array(hashBuffer));
-        return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+const CONFIG = {
+  GIST_ID: 'e75637adcf06c0fa04a244bca28e741e',
+  DEMO_PASSWORD_HASH: '8c6976e5b5410415bde908bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918', // SHA-256 for "admin"
+  DEMO_ANNOUNCEMENTS: [
+    {
+      title: "nothing to see here",
+      content: "nothing to see here",
+      date: new Date().toISOString()
     }
+  ]
+};
 
-    /**
-     * Gist üzerinden güncel Parola Hash'ini ve Duyuruları Çeker
-     */
-    async function fetchGistPayload() {
-        if (cachedGistData) return cachedGistData;
+let cachedPayload = null;
 
-        try {
-            const res = await fetch(`https://api.github.com/gists/${CONFIG.GIST_ID}`);
-            if (res.ok) {
-                const gistData = await res.json();
-                const files = gistData.files;
-                const firstKey = Object.keys(files)[0];
-                const content = files[firstKey].content;
+// SHA-256 Hash Fonksiyonu
+async function sha256(message) {
+  const msgBuffer = new TextEncoder().encode(message);
+  const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
+  const hashArray = Array.from(new Uint8Array(hashBuffer));
+  return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+}
 
-                try {
-                    cachedGistData = JSON.parse(content);
-                } catch {
-                    // Eğer düz metin çekilirse varsayılan objeye dönüştür
-                    cachedGistData = {
-                        passwordHash: CONFIG.DEMO_PASSWORD_HASH,
-                        announcements: [{ title: "Duyuru", content: content, date: gistData.updated_at }]
-                    };
-                }
-                return cachedGistData;
-            }
-        } catch (err) {
-            console.warn("Gist bağlantısı kurulamadı. Varsayılan rotasyon kullanılıyor.");
-        }
+// Gist üzerinden Veri/Hash Çekme
+async function fetchGistPayload() {
+  if (cachedPayload) return cachedPayload;
 
-        return {
-            passwordHash: CONFIG.DEMO_PASSWORD_HASH,
-            announcements: CONFIG.DEMO_ANNOUNCEMENTS
+  try {
+    const res = await fetch(`https://api.github.com/gists/${CONFIG.GIST_ID}`);
+    if (res.ok) {
+      const gistData = await res.json();
+      const firstFileKey = Object.keys(gistData.files)[0];
+      const content = gistData.files[firstFileKey].content;
+
+      try {
+        cachedPayload = JSON.parse(content);
+      } catch (e) {
+        cachedPayload = {
+          passwordHash: CONFIG.DEMO_PASSWORD_HASH,
+          announcements: [{ title: "Duyuru", content: content, date: gistData.updated_at }]
         };
+      }
+      return cachedPayload;
     }
+  } catch (err) {
+    console.warn("Gist bağlantısı kurulamadı. Varsayılan veri kullanılıyor.");
+  }
 
-    /**
-     * Giriş İşlemi Doğrulaması (SHA-256)
-     */
-    async function handleLogin(e) {
-        e.preventDefault();
-        const passwordInput = document.getElementById('password').value;
-        const errorDiv = document.getElementById('auth-error');
-        errorDiv.innerText = "Kimlik doğrulanıyor...";
+  return {
+    passwordHash: CONFIG.DEMO_PASSWORD_HASH,
+    announcements: CONFIG.DEMO_ANNOUNCEMENTS
+  };
+}
 
-        const inputHash = await sha256(passwordInput);
-        const payload = await fetchGistPayload();
+// Giriş Kontrolü
+async function handleLogin(e) {
+  e.preventDefault();
+  const inputPass = document.getElementById('adminPassword').value;
+  const errorDiv = document.getElementById('authError');
+  errorDiv.style.display = 'none';
 
-        // Gist içindeki 'passwordHash' veya 'password' rotasyonu kontrol edilir
-        const validHash = payload.passwordHash || payload.authHash || CONFIG.DEMO_PASSWORD_HASH;
+  const inputHash = await sha256(inputPass);
+  const payload = await fetchGistPayload();
+  const validHash = payload.passwordHash || payload.authHash || CONFIG.DEMO_PASSWORD_HASH;
 
-        if (inputHash === validHash || passwordInput === payload.password) {
-            sessionStorage.setItem('authenticated', 'true');
-            showDashboard(payload.announcements || payload);
-        } else {
-            errorDiv.innerText = "HATALI PAROLA! Erişim Reddedildi.";
-            document.getElementById('password').value = '';
-        }
-    }
+  if (inputHash === validHash || inputPass === payload.password) {
+    sessionStorage.setItem('authenticated', 'true');
+    renderDashboard(payload.announcements || payload);
+  } else {
+    errorDiv.style.display = 'block';
+    document.getElementById('adminPassword').value = '';
+  }
+}
 
-    /**
-     * Oturumu Kapatma
-     */
-    function handleLogout() {
-        sessionStorage.removeItem('authenticated');
-        document.getElementById('dashboard-screen').style.display = 'none';
-        document.getElementById('auth-screen').style.display = 'block';
-        document.getElementById('password').value = '';
-        document.getElementById('auth-error').innerText = '';
-    }
+// Oturumu Kapatma
+function handleLogout() {
+  sessionStorage.removeItem('authenticated');
+  location.reload();
+}
 
-    /**
-     * Dashboard'u ve Duyuruları Göster
-     */
-    function showDashboard(announcements) {
-        document.getElementById('auth-screen').style.display = 'none';
-        document.getElementById('dashboard-screen').style.display = 'block';
-        renderAnnouncements(announcements);
-    }
+// Dashboard Görünümü Render
+function renderDashboard(announcements) {
+  document.getElementById('auth-screen').style.display = 'none';
+  document.getElementById('dashboard-screen').style.display = 'block';
+  
+  // Navigasyona Çıkış Yap Butonu Ekle
+  document.getElementById('nav-action').innerHTML = `<button onclick="handleLogout()" class="back">Çıkış Yap ✕</button>`;
 
-    /**
-     * Duyuruları Ekrana Basma
-     */
-    function renderAnnouncements(items) {
-        const container = document.getElementById('announcements-container');
-        const list = Array.isArray(items) ? items : [items];
+  const container = document.getElementById('announcementsContainer');
+  const list = Array.isArray(announcements) ? announcements : [announcements];
 
-        if (!list || list.length === 0) {
-            container.innerHTML = '<div class="loading">Henüz yayınlanmış duyuru bulunmuyor.</div>';
-            return;
-        }
+  if (!list || list.length === 0) {
+    container.innerHTML = `<div class="loading-state">Yayınlanmış duyuru yok.</div>`;
+    return;
+  }
 
-        container.innerHTML = list.map(item => {
-            const title = escapeHTML(item.title || "nothing to see here");
-            const content = escapeHTML(item.content || "nothing to see here");
-            const dateStr = item.date 
-                ? new Date(item.date).toLocaleDateString('tr-TR') 
-                : "Güncel";
+  container.innerHTML = list.map(item => `
+    <article class="card">
+      <div class="card-header">
+        <div class="card-title">${escapeHTML(item.title || "nothing to see here")}</div>
+        <div class="card-date">${item.date ? new Date(item.date).toLocaleDateString('tr-TR') : 'Güncel'}</div>
+      </div>
+      <div class="card-body">${escapeHTML(item.content || "nothing to see here")}</div>
+    </article>
+  `).join('');
+}
 
-            return `
-                <article class="announcement-card">
-                    <div class="card-header">
-                        <h2 class="card-title">${title}</h2>
-                        <span class="card-date">${dateStr}</span>
-                    </div>
-                    <div class="card-body">${content}</div>
-                </article>
-            `;
-        }).join('');
-    }
+function escapeHTML(str) {
+  if (typeof str !== 'string') return '';
+  return str.replace(/[&<>'"]/g, tag => ({
+    '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;'
+  }[tag] || tag));
+}
 
-    /**
-     * XSS Engelleme
-     */
-    function escapeHTML(str) {
-        if (typeof str !== 'string') return '';
-        return str.replace(/[&<>'"]/g, 
-            tag => ({
-                '&': '&amp;',
-                '<': '&lt;',
-                '>': '&gt;',
-                "'": '&#39;',
-                '"': '&quot;'
-            }[tag] || tag)
-        );
-    }
-
-    // Sayfa yüklendiğinde mevcut oturumu kontrol et
-    document.addEventListener('DOMContentLoaded', async () => {
-        if (sessionStorage.getItem('authenticated') === 'true') {
-            const payload = await fetchGistPayload();
-            showDashboard(payload.announcements || payload);
-        }
-    });
+// Oturum Durumu Kontrolü
+document.addEventListener('DOMContentLoaded', async () => {
+  if (sessionStorage.getItem('authenticated') === 'true') {
+    const payload = await fetchGistPayload();
+    renderDashboard(payload.announcements || payload);
+  }
+});
 </script>
 
 </body>
