@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Intro</title>
+  <style>
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html, body {
+      width: 100%;
+      height: 100%;
+      background: #000;
+      color: #000;
+      font-family: sans-serif;
+      overflow: hidden;
+    }
+
+    /* --- Landing screen --- */
+    #landing {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      height: 100%;
+      transition: opacity 0.4s ease;
+    }
+
+    #landing.hidden {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    #proceed-btn {
+      background: #22c55e;
+      color: #000;
+      border: none;
+      padding: 18px 52px;
+      font-size: 1.1rem;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      cursor: pointer;
+      border-radius: 4px;
+      transition: background 0.15s ease, transform 0.1s ease;
+    }
+
+    #proceed-btn:hover {
+      background: #16a34a;
+    }
+
+    #proceed-btn:active {
+      transform: scale(0.97);
+    }
+
+    /* --- Video screen --- */
+    #video-screen {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: #000;
+      align-items: center;
+      justify-content: center;
+    }
+
+    #video-screen.active {
+      display: flex;
+    }
+
+    #intro-video {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+  </style>
+</head>
+<body>
+
+  <div id="landing">
+    <button id="proceed-btn">Proceed</button>
+  </div>
+
+  <div id="video-screen">
+    <video id="intro-video" src="intro.mp4" playsinline></video>
+  </div>
+
+  <script>
+    const landing    = document.getElementById('landing');
+    const videoScreen = document.getElementById('video-screen');
+    const video      = document.getElementById('intro-video');
+    const btn        = document.getElementById('proceed-btn');
+
+    btn.addEventListener('click', () => {
+      // Fade out landing
+      landing.classList.add('hidden');
+
+      setTimeout(() => {
+        landing.style.display = 'none';
+        videoScreen.classList.add('active');
+        video.play();
+      }, 400);
+    });
+
+    // Redirect when video ends
+    video.addEventListener('ended', () => {
+      window.location.href = 'https://bflsiber.pages.dev';
+    });
+  </script>
+
+</body>
+</html>
